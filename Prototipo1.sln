@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HOLDGENESIST", "HOLDGENESIST.csproj", "{EA274351-B986-42F0-A7C2-486F96D2BABA}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "FrutosDelPaísEXE", "..\FrutosDelPaísEXE\FrutosDelPaísEXE.vdproj", "{2BF86F02-4EAD-4646-9AA2-CD2B9ADA599B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EA274351-B986-42F0-A7C2-486F96D2BABA}.Debug|x86.ActiveCfg = Debug|x86
+		{EA274351-B986-42F0-A7C2-486F96D2BABA}.Debug|x86.Build.0 = Debug|x86
+		{EA274351-B986-42F0-A7C2-486F96D2BABA}.Release|x86.ActiveCfg = Release|x86
+		{EA274351-B986-42F0-A7C2-486F96D2BABA}.Release|x86.Build.0 = Release|x86
+		{2BF86F02-4EAD-4646-9AA2-CD2B9ADA599B}.Debug|x86.ActiveCfg = Debug
+		{2BF86F02-4EAD-4646-9AA2-CD2B9ADA599B}.Release|x86.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
