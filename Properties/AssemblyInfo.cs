@@ -6,11 +6,11 @@ using System.Resources;
 // La información general sobre un ensamblado se controla mediante el siguiente 
 // conjunto de atributos. Cambie estos atributos para modificar la información
 // asociada con un ensamblado.
-[assembly: AssemblyTitle("DualTaller")]
-[assembly: AssemblyDescription("Solción para taller automotriz")]
+[assembly: AssemblyTitle("Codebot")]
+[assembly: AssemblyDescription("Herramienta Vieja")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("DualSoft")]
-[assembly: AssemblyProduct("Prototipo1")]
+[assembly: AssemblyProduct("CodeBot")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("DualSoft")]
 [assembly: AssemblyCulture("")]
@@ -18,7 +18,7 @@ using System.Resources;
 // Si establece ComVisible como false, los tipos de este ensamblado no estarán visibles 
 // para los componentes COM. Si necesita obtener acceso a un tipo de este ensamblado desde 
 // COM, establezca el atributo ComVisible como true en este tipo.
-[assembly: ComVisible(false)]
+[assembly: ComVisible(true)]
 
 // El siguiente GUID sirve como identificador de typelib si este proyecto se expone a COM
 [assembly: Guid("1fd57269-0a55-4246-ab6b-ded44dd9e691")]
@@ -35,4 +35,4 @@ using System.Resources;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: NeutralResourcesLanguageAttribute("es-CL")]
+[assembly: NeutralResourcesLanguageAttribute("")]

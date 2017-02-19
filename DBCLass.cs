@@ -1,58 +1,52 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MySql.Data.MySqlClient;
-using System.Windows.Forms;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
 
 namespace Codebot
 {
-    public class claseBD
+    public class DBCLass
     {
-        #region variables Internas
-        public string _base { get; set; }
-        public string _server { get; set; }
-        public string _user { get; set; }
-        public string _pass { get; set; }
-        public string _port { get; set; }
-        #endregion
-        
-        #region Inicializadores de clases
-        private string Base{get { return _base;}set { _base = value; }}
-        private string Server { get { return _server; } set { _server = value; } }
-        private string User { get { return _user; } set { _user = value; } }
-        private string Pass { get { return _pass; } set { _pass = value; } }
-        private string Port { get { return _port; } set { _port = value; } }
-        #endregion
-       // public string cad_Coneccion { get; set; }
-        public void cargarDatosConexion()
-        {
-            try
-            {
-                string cadena_coneccion = "Data Source=" + Server + ";Database=" + Base + ";Uid=" + User + ";Pwd='" + Pass + "';port=" + Port+";";
-                conex = new MySqlConnection(cadena_coneccion);
-
-            }
-            catch { }
-        }
-      /*  public static MySqlConnection conex = new MySqlConnection("Server=192.168.0.110;Database=bdfrutosdelpais;Uid=dualsoft;Pwd='76552'");*/
+        public string database { get; set; }
+        public string servidor { get; set; }
+        public string password { get; set; }
+        public string usuario { get; set; }
+        public string puerto { get; set; }
         public static MySqlConnection conex;// new MySqlConnection("Server=;Database=db_patagonia;Uid=root;Pwd=''");
         public MySqlCommand Comando = new MySqlCommand();
         public MySqlDataReader Rec;
-        public claseBD()
+        public DBCLass()
         {
-
-                cargarDatosConexion();
-            if (conex.State == ConnectionState.Open)
-            {
-                conex.Close();
-            }
-            conex.Open();
-           
+            GestionConeccion();
         }
-
+        internal void GestionConeccion()
+        {
+            if (servidor == null || database == null || usuario == null || password == null || puerto == null)
+            {
+                cargarDatosConexionXML();
+            }
+            string cadena_coneccion = "Data Source=" + servidor + ";Database=" + database + ";Uid=" + usuario + ";Pwd='" + password + "';port=" + puerto + ";";
+            conex = new MySqlConnection(cadena_coneccion);
+        }
+        public void cargarDatosConexionXML()
+        {
+            try
+            {
+                DataSet data = new DataSet();
+                data.ReadXml("c:\\pos\\conf.xml");
+                DataRow[] row = data.Tables["Conexion"].Select();
+                database = row[0]["Base"].ToString();
+                password = (row[0]["Pass"].ToString().Length > 0 ? row[0]["Pass"].ToString() : "");
+                puerto = row[0]["Port"].ToString();
+                servidor = row[0]["Server"].ToString();
+                usuario = row[0]["User"].ToString();
+            }
+            catch { }
+        }
         public DataTable Select_datatable(string sql)
         {
             DataTable dataTable = new DataTable();
@@ -131,7 +125,7 @@ namespace Codebot
             }
             catch (Exception ex)
             {
-               
+
             }
             finally
             {
@@ -144,7 +138,7 @@ namespace Codebot
 
 
         }
-     
+
         public MySqlDataReader EjecutarConsulta(String CadSql)
         {
             try
@@ -175,7 +169,7 @@ namespace Codebot
             }
             catch (Exception ex)
             {
-               
+
                 Rec = null;
                 CerrarConexion();
             }
@@ -183,6 +177,6 @@ namespace Codebot
 
         }
 
-       
+
     }
 }

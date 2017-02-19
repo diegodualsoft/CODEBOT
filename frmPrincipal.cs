@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 
-namespace Prototipo1
+namespace Codebot
 {
     public partial class frmPrincipal : Form
     {
@@ -16,7 +16,6 @@ namespace Prototipo1
         {
             InitializeComponent();
         }
-        frmMenu M = new frmMenu();
         //frmInicioSesion IS = new frmInicioSesion();
 
         private void cmdSalir_Click(object sender, EventArgs e)
@@ -27,8 +26,7 @@ namespace Prototipo1
 
         private void cmdInicio_Click(object sender, EventArgs e)
         {
-            M.Show();
-            this.Hide();
+            
         }
 
         private void frmPrincipal_Load(object sender, EventArgs e)
@@ -54,27 +52,24 @@ namespace Prototipo1
         }
         private void llenarDgvColumns()
         {
-            string CadSql;
-            CadSql = "show fields from " + txtdb.Text + "." + dgvtablas.CurrentRow.Cells["TABLA"].Value.ToString() + " ";
-
-            claseBD CBd = new claseBD();
-            int fila;
+            dgvcolumnas.DataSource = null;
             MySqlDataReader Rec = null;
             try
             {
-                CBd.AbrirConexion();
-                Rec = CBd.EjecutarConsulta(CadSql);
+                    Rec=  new DBCLass().EjecutarConsulta("show fields from " + txtDb.Text + "." + dgvtablas.CurrentRow.Cells["TABLA"].Value.ToString() + " ");
+                    DataTable alfa = new DataTable();
+                    alfa.Columns.Add("Selecionar", typeof(bool)).ReadOnly = false ;
+                    alfa.Columns.Add("Columnas", typeof(string)).ReadOnly = true;
+                    alfa.Columns.Add("Tipo", typeof(string)).ReadOnly = true;
+                    while (Rec.Read())
+                    {
+                        DataRow beta =  alfa.NewRow();
+                        beta["Columnas"] = Rec["Field"].ToString();
+                        beta["Tipo"] = Rec["Type"].ToString();
+                        alfa.Rows.Add(beta);
 
-
-                dgvcolumnas.RowCount = 0;
-                while (Rec.Read())
-                {
-                    dgvcolumnas.RowCount = dgvcolumnas.RowCount + 1;
-                    fila = dgvcolumnas.RowCount - 1;
-                    dgvcolumnas.Rows[fila].Cells[0].Value = Rec["Field"].ToString();
-
-
-                }
+                    }
+                    dgvcolumnas.DataSource = alfa;
             }
             catch (Exception ex)
             {
@@ -94,16 +89,25 @@ namespace Prototipo1
         //        cbd.EjecutarIUD2(insertar);
         private void llenarDgv()
         {
-            string CadSql;
-            CadSql = "show tables from " + txtdb.Text + "";
+            string CadSql ="" ;
 
-            claseBD CBd = new claseBD();
+            //claseBD CBd = new claseBD() { 
+            //    _base = txtDb.Text, 
+            //    _pass = txtpass.Text, 
+            //    _port = txtport.Text, 
+            //    _server = txtIp.Text,
+            //    _user = txtuser.Text
+            //};
             int fila;
             MySqlDataReader Rec = null;
             try
             {
-                CBd.AbrirConexion();
-                Rec = CBd.EjecutarConsulta(CadSql);
+                Rec =  new DBCLass() { 
+                database = txtDb.Text.ToString(), 
+                password = txtpass.Text.ToString(), 
+                puerto = txtport.Text.ToString(), 
+                servidor = txtIp.Text.ToString(),
+                usuario= txtuser.Text.ToString()}.EjecutarConsulta("show tables from " + txtDb.Text + "");
 
 
                 dgvtablas.RowCount = 0;
@@ -111,7 +115,7 @@ namespace Prototipo1
                 {
                     dgvtablas.RowCount = dgvtablas.RowCount + 1;
                     fila = dgvtablas.RowCount - 1;
-                    dgvtablas.Rows[fila].Cells[0].Value = Rec["Tables_in_db_super_fernandez"].ToString();
+                    dgvtablas.Rows[fila].Cells[0].Value = Rec["Tables_in_"+txtDb.Text].ToString();
 
 
                 }
@@ -129,6 +133,7 @@ namespace Prototipo1
                 }
             }
         }
+        public string cad_coneccion {get; set;}
         private void button2_Click(object sender, EventArgs e)
         {
             llenarDgv();
@@ -146,18 +151,67 @@ namespace Prototipo1
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            if (dgvcolumnas.RowCount > 0)
-
+                string parametros = "parametros";
+                string campos = "";
+                DataTable datos = (DataTable)dgvcolumnas.DataSource;
+                foreach (DataRow dr in datos.Rows)
+                {
+                    try
+                    {
+                        if (Convert.ToBoolean(dr["Selecionar"].ToString()) != false)
+                        {
+                            campos += "'" + dr["Columnas"] + "',";
+                        }
+                        else
+                        {
+                        }
+                    }
+                    catch { }
+                }
+                campos.TrimEnd(',');
             txtcode.Text =
-            "claseBD cbd = new claseBD();\n"+
+            "public Void Insertar("+parametros+"){"+
             
             " string insertar = \" insert into " + lbltabla.Text +
-            "(" + dgvcolumnas.Rows[0].Cells[0].Value.ToString() + ","
-                + dgvcolumnas.Rows[1].Cells[0].Value.ToString() + ","
-                + dgvcolumnas.Rows[2].Cells[0].Value.ToString() + ","
-                + dgvcolumnas.Rows[3].Cells[0].Value.ToString() +
-          ") values \"+control+\",\"+control+\",\"+control+\",\"+control+\";\"; \n";
+            "("+campos+") values \"+control+\",\"+control+\",\"+control+\",\"+control+\";\"; \n}";
          
+        }
+
+        private void dgvcolumnas_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void LoadDefaul_CheckedChanged(object sender, EventArgs e)
+        {
+            if (LoadDefaul.Checked == true)
+            {
+                cargarDatosConexion();
+            }
+            else
+            {
+                //txtcode.Clear();
+                txtDb.Clear();
+                txtIp.Clear();
+                txtpass.Clear();
+                txtport.Clear();
+                txtuser.Clear();
+            }
+        }
+        public void cargarDatosConexion()
+        {
+            try
+            {
+                DataSet data = new DataSet();
+                data.ReadXml("c:\\pos\\conf.xml");
+                DataRow[] row = data.Tables["Conexion"].Select();
+                txtDb.Text = row[0]["Base"].ToString();
+                txtpass.Text = (row[0]["Pass"].ToString().Length > 0 ? row[0]["Pass"].ToString() : "");
+                txtport.Text= row[0]["Port"].ToString();
+                txtIp.Text = row[0]["Server"].ToString();
+                txtuser.Text = row[0]["User"].ToString();
+            }
+            catch { }
         }
     }
 }
