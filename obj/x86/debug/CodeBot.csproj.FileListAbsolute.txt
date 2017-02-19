@@ -8,3 +8,4 @@ C:\Users\linker\Documents\GitHub\CODEBOT\obj\x86\Debug\Codebot.Properties.Resour
 C:\Users\linker\Documents\GitHub\CODEBOT\obj\x86\Debug\CodeBot.csproj.GenerateResource.Cache
 C:\Users\linker\Documents\GitHub\CODEBOT\obj\x86\Debug\CodeBot.exe
 C:\Users\linker\Documents\GitHub\CODEBOT\obj\x86\Debug\CodeBot.pdb
+C:\Users\linker\Documents\GitHub\CODEBOT\obj\x86\Debug\CodeBot.csprojResolveAssemblyReference.cache
