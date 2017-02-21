@@ -158,8 +158,22 @@ namespace Codebot
         }
         private void button1_Click(object sender, EventArgs e)
         {
-                string parametros = "parametros";
+                string parametros = "";
                 string campos = "";
+                string valores = "";
+
+
+                string completemento = "AbrirConexion();\r\n" +
+                    "Comando.CommandType = System.Data.CommandType.Text;\r\n" +
+                    "Comando.Connection = CadenaConeccion;\r\n" +
+                    "Comando.CommandText = query;\r\n";
+                string ejecuta = "Filas = Comando.ExecuteNonQuery();";
+                string rec = "";
+                string commando = "command.Parameters.AddWithValue(";
+                string colaComando = ");";
+                string trys = "try{";
+                string captura = "}catch(Exception ex){\r\nMessageBox.show(ex.message);\r\n}";
+                string linea = "";
                 DataTable datos = (DataTable)dgvcolumnas.DataSource;
                 foreach (DataRow dr in datos.Rows)
                 {
@@ -167,7 +181,12 @@ namespace Codebot
                     {
                         if (Convert.ToBoolean(dr["Selecionar"].ToString()) != false)
                         {
-                            campos += "'" + dr["Columnas"] + "',";
+                            campos += "`" + dr["Columnas"] + "`,";
+                            parametros += new DicDatos().tipoData(dr["Tipo"].ToString()) + " " + dr["Columnas"] + ",";
+                            valores += "`@" + dr["Columnas"] + "`,";
+                            linea += commando + "\"@" + dr["Columnas"] + "\", " + dr["Columnas"] +colaComando+"\r\n";
+                            //para los select
+                            rec += "Filas[\"" + dr["Columnas"] + "\"];\n\r";
                         }
                         else
                         {
@@ -175,30 +194,20 @@ namespace Codebot
                     }
                     catch { }
                 }
-                string[] corte = campos.Split(',');
-            int contador = 0;
-            campos = "";
-            foreach (string a in corte)
-            {
-                if (a != "" && a != null)
-                {
-                    if (contador != corte.Length - 1)
-                    {
-                        campos += a + ",";
-                    }
-                    else
-                    {
-                        campos += a;
-                    }
-                }
-                contador++;
-            }
+                valores = valores.Substring(0, valores.Length - 1);
+                parametros = parametros.Substring(0, parametros.Length - 1);
+            campos = campos.Substring(0, campos.Length-1);
             code.Text =
-            "public void Insertar("+parametros+"){"+
-            
-            " string insertar = \" insert into " + lbltabla.Text +
-            "("+campos+") values \"+control+\",\"+control+\",\"+control+\",\"+control+\";\"; \n}";
+            "public void Insertar("+parametros+")\r\n{\r\n"+trys+"\r\n"+
+            " string query = \r\n\" insert into `" + lbltabla.Text +
+            "` (" + campos + ")\r\nvalues ("+
+            valores
+            +");\";\r\n"+completemento+"\r\n"+linea+"\r\n"+ejecuta+"\r\n"+captura+"}";
+
+
+
          
+
         }
 
         private void dgvcolumnas_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -241,6 +250,31 @@ namespace Codebot
         private void txtcode_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void code_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void fastColoredTextBox1_Load(object sender, EventArgs e)
+        {
+            string texto = new StreamReader("TextFile1.txt").ReadToEnd();
+            fastColoredTextBox1.Text = texto;
+        }
+
+        private void tabControl1_TabIndexChanged(object sender, EventArgs e)
+        {
+            string texto = new StreamReader("TextFile1.txt").ReadToEnd();
+            fastColoredTextBox1.Text = texto;
+            string texto2 = new StreamReader("TextFile2.txt").ReadToEnd();
+            fastColoredTextBox2.Text = texto2;
+        }
+
+        private void fastColoredTextBox2_Load(object sender, EventArgs e)
+        {
+            string texto2 = new StreamReader("TextFile2.txt").ReadToEnd();
+            fastColoredTextBox2.Text = texto2;
         }
     }
 }
