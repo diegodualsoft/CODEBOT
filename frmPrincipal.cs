@@ -1,17 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+using System.Drawing.Drawing2D;
+using System.Threading;
 using System.Windows.Forms;
+using System.Drawing;
+using FastColoredTextBoxNS;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
+using System.IO;
+using System.Linq;
+using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 using MySql.Data.MySqlClient;
+using FastColoredTextBoxNS;
+using System.Text.RegularExpressions;
+using System.Data;
 
 namespace Codebot
 {
     public partial class frmPrincipal : Form
     {
+        private frmPrincipal instance;
+
         public frmPrincipal()
         {
             InitializeComponent();
@@ -56,7 +66,7 @@ namespace Codebot
             MySqlDataReader Rec = null;
             try
             {
-                    Rec=  new DBCLass().EjecutarConsulta("show fields from " + txtDb.Text + "." + dgvtablas.CurrentRow.Cells["TABLA"].Value.ToString() + " ");
+                    Rec=   new DBCLass(txtDb.Text, txtIp.Text, txtuser.Text, txtpass.Text, txtport.Text).EjecutarConsulta("show fields from " + txtDb.Text + "." + dgvtablas.CurrentRow.Cells["TABLA"].Value.ToString() + " ");
                     DataTable alfa = new DataTable();
                     alfa.Columns.Add("Selecionar", typeof(bool)).ReadOnly = false ;
                     alfa.Columns.Add("Columnas", typeof(string)).ReadOnly = true;
@@ -99,15 +109,12 @@ namespace Codebot
             //    _user = txtuser.Text
             //};
             int fila;
+            DBCLass db = new DBCLass(txtDb.Text, txtIp.Text, txtuser.Text, txtpass.Text, txtport.Text);
+
             MySqlDataReader Rec = null;
             try
             {
-                Rec =  new DBCLass() { 
-                database = txtDb.Text.ToString(), 
-                password = txtpass.Text.ToString(), 
-                puerto = txtport.Text.ToString(), 
-                servidor = txtIp.Text.ToString(),
-                usuario= txtuser.Text.ToString()}.EjecutarConsulta("show tables from " + txtDb.Text + "");
+                Rec =  db.EjecutarConsulta("show tables from " + txtDb.Text + "");
 
 
                 dgvtablas.RowCount = 0;
@@ -168,9 +175,26 @@ namespace Codebot
                     }
                     catch { }
                 }
-                campos.TrimEnd(',');
-            txtcode.Text =
-            "public Void Insertar("+parametros+"){"+
+                string[] corte = campos.Split(',');
+            int contador = 0;
+            campos = "";
+            foreach (string a in corte)
+            {
+                if (a != "" && a != null)
+                {
+                    if (contador != corte.Length - 1)
+                    {
+                        campos += a + ",";
+                    }
+                    else
+                    {
+                        campos += a;
+                    }
+                }
+                contador++;
+            }
+            code.Text =
+            "public void Insertar("+parametros+"){"+
             
             " string insertar = \" insert into " + lbltabla.Text +
             "("+campos+") values \"+control+\",\"+control+\",\"+control+\",\"+control+\";\"; \n}";
@@ -212,6 +236,11 @@ namespace Codebot
                 txtuser.Text = row[0]["User"].ToString();
             }
             catch { }
+        }
+
+        private void txtcode_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

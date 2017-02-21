@@ -50,6 +50,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FastColoredTextBox, Version=2.16.21.0, Culture=neutral, PublicKeyToken=fb8aa12b994ef61b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\FastColoredTextBox.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
     <Reference Include="MySql.Data">
       <HintPath>..\..\..\..\..\dualsoft\MySql.Data.dll</HintPath>
     </Reference>

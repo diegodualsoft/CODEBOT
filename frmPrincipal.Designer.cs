@@ -1,4 +1,5 @@
-﻿namespace Codebot
+﻿using FastColoredTextBoxNS;
+namespace Codebot
 {
     partial class frmPrincipal
     {
@@ -35,6 +36,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPrincipal));
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
@@ -46,11 +48,9 @@
             this.dgvtablas = new System.Windows.Forms.DataGridView();
             this.TABLA = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label3 = new System.Windows.Forms.Label();
-            this.txtcode = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.txtDb = new System.Windows.Forms.TextBox();
             this.txtIp = new System.Windows.Forms.TextBox();
             this.txtuser = new System.Windows.Forms.TextBox();
@@ -62,8 +62,11 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.LoadDefaul = new System.Windows.Forms.CheckBox();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.code = new FastColoredTextBoxNS.FastColoredTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvcolumnas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvtablas)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.code)).BeginInit();
             this.SuspendLayout();
             // 
             // timer1
@@ -75,9 +78,9 @@
             this.checkBox1.AutoSize = true;
             this.checkBox1.Location = new System.Drawing.Point(36, 423);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(83, 17);
+            this.checkBox1.Size = new System.Drawing.Size(56, 17);
             this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "Insert Unico";
+            this.checkBox1.Text = "Select";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // checkBox2
@@ -85,15 +88,15 @@
             this.checkBox2.AutoSize = true;
             this.checkBox2.Location = new System.Drawing.Point(122, 423);
             this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(96, 17);
+            this.checkBox2.Size = new System.Drawing.Size(57, 17);
             this.checkBox2.TabIndex = 1;
-            this.checkBox2.Text = "Insert en bucle";
+            this.checkBox2.Text = "Delete";
             this.checkBox2.UseVisualStyleBackColor = true;
             // 
             // checkBox3
             // 
             this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(36, 446);
+            this.checkBox3.Location = new System.Drawing.Point(200, 423);
             this.checkBox3.Name = "checkBox3";
             this.checkBox3.Size = new System.Drawing.Size(61, 17);
             this.checkBox3.TabIndex = 2;
@@ -104,6 +107,8 @@
             // 
             this.dgvcolumnas.AllowUserToAddRows = false;
             this.dgvcolumnas.AllowUserToDeleteRows = false;
+            this.dgvcolumnas.AllowUserToResizeColumns = false;
+            this.dgvcolumnas.AllowUserToResizeRows = false;
             this.dgvcolumnas.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
@@ -133,7 +138,7 @@
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvcolumnas.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvcolumnas.RowHeadersVisible = false;
-            this.dgvcolumnas.Size = new System.Drawing.Size(340, 146);
+            this.dgvcolumnas.Size = new System.Drawing.Size(738, 146);
             this.dgvcolumnas.TabIndex = 3;
             this.dgvcolumnas.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvcolumnas_CellContentClick);
             // 
@@ -168,6 +173,8 @@
             // 
             this.dgvtablas.AllowUserToAddRows = false;
             this.dgvtablas.AllowUserToDeleteRows = false;
+            this.dgvtablas.AllowUserToResizeColumns = false;
+            this.dgvtablas.AllowUserToResizeRows = false;
             this.dgvtablas.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
@@ -225,17 +232,9 @@
             this.label3.TabIndex = 8;
             this.label3.Text = "TABLAS";
             // 
-            // txtcode
-            // 
-            this.txtcode.Location = new System.Drawing.Point(323, 444);
-            this.txtcode.Multiline = true;
-            this.txtcode.Name = "txtcode";
-            this.txtcode.Size = new System.Drawing.Size(433, 226);
-            this.txtcode.TabIndex = 9;
-            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(323, 682);
+            this.button1.Location = new System.Drawing.Point(168, 446);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(433, 23);
             this.button1.TabIndex = 10;
@@ -261,15 +260,6 @@
             this.label4.Size = new System.Drawing.Size(96, 13);
             this.label4.TabIndex = 13;
             this.label4.Text = "Datos Del Servidor";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(320, 428);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(37, 13);
-            this.label5.TabIndex = 14;
-            this.label5.Text = "CODE";
             // 
             // txtDb
             // 
@@ -362,12 +352,68 @@
             this.LoadDefaul.UseVisualStyleBackColor = true;
             this.LoadDefaul.CheckedChanged += new System.EventHandler(this.LoadDefaul_CheckedChanged);
             // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Location = new System.Drawing.Point(279, 423);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(52, 17);
+            this.checkBox4.TabIndex = 26;
+            this.checkBox4.Text = "Insert";
+            this.checkBox4.UseVisualStyleBackColor = true;
+            // 
+            // code
+            // 
+            this.code.AutoCompleteBrackets = true;
+            this.code.AutoCompleteBracketsList = new char[] {
+        '(',
+        ')',
+        '{',
+        '}',
+        '[',
+        ']',
+        '\"',
+        '\"',
+        '\'',
+        '\''};
+            this.code.AutoIndentCharsPatterns = "\n^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;]+);\n^\\s*(case|default)\\s*[^:]*(" +
+    "?<range>:)\\s*(?<range>[^;]+);\n";
+            this.code.AutoScrollMinSize = new System.Drawing.Size(0, 14);
+            this.code.BackBrush = null;
+            this.code.BracketsHighlightStrategy = FastColoredTextBoxNS.BracketsHighlightStrategy.Strategy2;
+            this.code.CharHeight = 14;
+            this.code.CharWidth = 8;
+            this.code.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+            this.code.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.code.IsReplaceMode = false;
+            this.code.Language = FastColoredTextBoxNS.Language.CSharp;
+            this.code.LeftBracket = '(';
+            this.code.LeftBracket2 = '{';
+            this.code.Location = new System.Drawing.Point(12, 474);
+            this.code.Name = "code";
+            this.code.Paddings = new System.Windows.Forms.Padding(0);
+            this.code.ReadOnly = true;
+            this.code.RightBracket = ')';
+            this.code.RightBracket2 = '}';
+            this.code.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+            this.code.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("code.ServiceColors")));
+            this.code.ShowFoldingLines = true;
+            this.code.Size = new System.Drawing.Size(762, 194);
+            this.code.TabIndex = 28;
+            this.code.UseWaitCursor = true;
+            this.code.VirtualSpace = true;
+            this.code.WideCaret = true;
+            this.code.WordWrap = true;
+            this.code.Zoom = 100;
+            // 
             // frmPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightGray;
-            this.ClientSize = new System.Drawing.Size(823, 733);
+            this.ClientSize = new System.Drawing.Size(823, 680);
+            this.Controls.Add(this.code);
+            this.Controls.Add(this.checkBox4);
             this.Controls.Add(this.LoadDefaul);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
@@ -379,11 +425,9 @@
             this.Controls.Add(this.txtuser);
             this.Controls.Add(this.txtIp);
             this.Controls.Add(this.txtDb);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.txtcode);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.dgvtablas);
             this.Controls.Add(this.label2);
@@ -400,6 +444,7 @@
             this.Load += new System.EventHandler(this.frmPrincipal_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvcolumnas)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvtablas)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.code)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -417,23 +462,23 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataGridView dgvtablas;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txtcode;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.DataGridViewTextBoxColumn TABLA;
-        private System.Windows.Forms.TextBox txtDb;
-        private System.Windows.Forms.TextBox txtIp;
-        private System.Windows.Forms.TextBox txtuser;
-        private System.Windows.Forms.TextBox txtpass;
-        private System.Windows.Forms.TextBox txtport;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.CheckBox LoadDefaul;
+        public System.Windows.Forms.TextBox txtDb;
+        public System.Windows.Forms.TextBox txtIp;
+        public System.Windows.Forms.TextBox txtuser;
+        public System.Windows.Forms.TextBox txtpass;
+        public System.Windows.Forms.TextBox txtport;
+        private System.Windows.Forms.CheckBox checkBox4;
+        private FastColoredTextBox code;
     }
 }
 

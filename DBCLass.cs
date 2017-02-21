@@ -19,8 +19,15 @@ namespace Codebot
         public static MySqlConnection conex;// new MySqlConnection("Server=;Database=db_patagonia;Uid=root;Pwd=''");
         public MySqlCommand Comando = new MySqlCommand();
         public MySqlDataReader Rec;
-        public DBCLass()
+
+
+        public DBCLass(string db, string ip, string usu, string pass, string port)
         {
+            database = db;
+            servidor = ip;
+            password = pass;
+            usuario = usu;
+            puerto = port;
             GestionConeccion();
         }
         internal void GestionConeccion()
