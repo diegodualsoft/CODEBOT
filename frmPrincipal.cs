@@ -60,6 +60,14 @@ namespace Codebot
         {
 
         }
+        internal DataTable crearTablaColumnas()
+        {
+            DataTable alfa = new DataTable();
+            alfa.Columns.Add("Selecionar", typeof(bool)).ReadOnly = false;
+            alfa.Columns.Add("Columnas", typeof(string)).ReadOnly = true;
+            alfa.Columns.Add("Tipo", typeof(string)).ReadOnly = true;
+            return alfa;
+        }
         private void llenarDgvColumns()
         {
             dgvcolumnas.DataSource = null;
@@ -150,6 +158,7 @@ namespace Codebot
         {
             llenarDgvColumns();
             lbltabla.Text = dgvtablas.CurrentRow.Cells["TABLA"].Value.ToString();
+            checkBox5.Checked = false;
         }
 
         private void dgvtablas_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -158,58 +167,271 @@ namespace Codebot
         }
         private void button1_Click(object sender, EventArgs e)
         {
-                string parametros = "";
-                string campos = "";
-                string valores = "";
-
-
-                string completemento = "AbrirConexion();\r\n" +
-                    "Comando.CommandType = System.Data.CommandType.Text;\r\n" +
-                    "Comando.Connection = CadenaConeccion;\r\n" +
-                    "Comando.CommandText = query;\r\n";
-                string ejecuta = "Filas = Comando.ExecuteNonQuery();";
-                string rec = "";
-                string commando = "command.Parameters.AddWithValue(";
-                string colaComando = ");";
-                string trys = "try{";
-                string captura = "}catch(Exception ex){\r\nMessageBox.show(ex.message);\r\n}";
-                string linea = "";
-                DataTable datos = (DataTable)dgvcolumnas.DataSource;
-                foreach (DataRow dr in datos.Rows)
-                {
-                    try
-                    {
-                        if (Convert.ToBoolean(dr["Selecionar"].ToString()) != false)
-                        {
-                            campos += "`" + dr["Columnas"] + "`,";
-                            parametros += new DicDatos().tipoData(dr["Tipo"].ToString()) + " " + dr["Columnas"] + ",";
-                            valores += "`@" + dr["Columnas"] + "`,";
-                            linea += commando + "\"@" + dr["Columnas"] + "\", " + dr["Columnas"] +colaComando+"\r\n";
-                            //para los select
-                            rec += "Filas[\"" + dr["Columnas"] + "\"];\n\r";
-                        }
-                        else
-                        {
-                        }
-                    }
-                    catch { }
-                }
-                valores = valores.Substring(0, valores.Length - 1);
-                parametros = parametros.Substring(0, parametros.Length - 1);
-            campos = campos.Substring(0, campos.Length-1);
-            code.Text =
-            "public void Insertar("+parametros+")\r\n{\r\n"+trys+"\r\n"+
-            " string query = \r\n\" insert into `" + lbltabla.Text +
-            "` (" + campos + ")\r\nvalues ("+
-            valores
-            +");\";\r\n"+completemento+"\r\n"+linea+"\r\n"+ejecuta+"\r\n"+captura+"}";
-
-
-
-         
-
+            if (chkSelect.Checked || chkdelete.Checked || chkupdate.Checked || chkinsert.Checked)
+            {
+                SelecionDeFunciones(chkinsert.Checked, chkdelete.Checked, chkSelect.Checked, chkupdate.Checked);
+            }
+            else
+            {
+                MessageBox.Show("Debe Selecionar Funcion");
+            }
         }
+        internal void SelecionDeFunciones(bool insert, bool delete, bool select, bool update)
+        {
+            string codigo = "";
+            if (insert)
+            {
+                setFuncion("insert");
+                codigo += code.Text + "\r\n";
+                code.Clear();
+            }
+            if (select)
+            {
+                setFuncion("select");
+                codigo += code.Text + "\r\n";
+                code.Clear();
+            }
+            if (delete)
+            {
+                setFuncion("delete");
+                codigo += code.Text + "\r\n";
+                code.Clear();
+            }
+            if (update)
+            {
+                setFuncion("update");
+                codigo += code.Text + "\r\n";
+                code.Clear();
+            }
+            code.Text = codigo;
+        }
+        internal void setFuncion(string who) {
+            switch (who)
+            {
+                case "select" :
+                    crearSelect();
+                    break;
+                case "delete":
+                    crearDelete();
+                    break;
+                case "update":
+                    crearUpdate();
+                    break;
+                case "insert":
+                    crearInsert();
+                    break;
+            }
+        }
+        #region Funciones
+        internal void crearInsert()
+        {
+            string parametros = "";
+            string campos = "";
+            string valores = "";
 
+            /**
+             * 
+             * crear  ejecucion de codigo
+             * 
+             * */
+            string completemento = "AbrirConexion();\r\n" +
+                "Comando.CommandType = System.Data.CommandType.Text;\r\n" +
+                "Comando.Connection = CadenaConeccion;\r\n" +
+                "Comando.CommandText = query;\r\n";
+            string ejecuta = "Filas = Comando.ExecuteNonQuery();";
+            string rec = "";
+            string commando = "command.Parameters.AddWithValue(";
+            string colaComando = ");";
+            string trys = "try{";
+            string captura = "}catch(Exception ex){\r\nMessageBox.show(ex.message);\r\n}";
+            string linea = "";
+            DataTable datos = (DataTable)dgvcolumnas.DataSource;
+            foreach (DataRow dr in datos.Rows)
+            {
+                try
+                {
+                    if (Convert.ToBoolean(dr["Selecionar"].ToString()) != false)
+                    {
+                        campos += "`" + dr["Columnas"] + "`,";
+                        parametros += new DicDatos().tipoData(dr["Tipo"].ToString()) + " " + dr["Columnas"] + ",";
+                        valores += "`@" + dr["Columnas"] + "`,";
+                        linea += commando + "\"@" + dr["Columnas"] + "\", " + dr["Columnas"] + colaComando + "\r\n";
+                        //para los select
+                        rec += "Filas[\"" + dr["Columnas"] + "\"];\n\r";
+                    }
+                    else
+                    {
+                    }
+                }
+                catch { }
+            }
+            valores = valores.Substring(0, valores.Length - 1);
+            parametros = parametros.Substring(0, parametros.Length - 1);
+            campos = campos.Substring(0, campos.Length - 1);
+            code.Text =
+            "public void Insertar(" + parametros + ")\r\n{\r\n" + trys + "\r\n" +
+            " string query = \r\n\" insert into `" + lbltabla.Text +
+            "` (" + campos + ")\r\nvalues (" +
+            valores
+            + ");\";\r\n" + completemento + "\r\n" + linea + "\r\n" + ejecuta + "\r\n" + captura + "}";
+        }
+        internal void crearSelect()
+        {
+            string parametros = "";
+            string campos = "";
+            string valores = "";
+
+            /**
+ * 
+ * crear los reader correcto para la ejecucion de codigo
+ * 
+ * */
+            string completemento = "AbrirConexion();\r\n" +
+                "Comando.CommandType = System.Data.CommandType.Text;\r\n" +
+                "Comando.Connection = CadenaConeccion;\r\n" +
+                "Comando.CommandText = query;\r\n";
+            string ejecuta = "Filas = Comando.ExecuteNonQuery();";
+            string rec = "";
+            string commando = "command.Parameters.AddWithValue(";
+            string colaComando = ");";
+            string trys = "try{";
+            string captura = "}catch(Exception ex){\r\nMessageBox.show(ex.message);\r\n}";
+            string linea = "";
+            DataTable datos = (DataTable)dgvcolumnas.DataSource;
+            foreach (DataRow dr in datos.Rows)
+            {
+                try
+                {
+                    if (Convert.ToBoolean(dr["Selecionar"].ToString()) != false)
+                    {
+                        campos += "`" + dr["Columnas"] + "`,";
+                        parametros += new DicDatos().tipoData(dr["Tipo"].ToString()) + " " + dr["Columnas"] + ",";
+                        valores += "`@" + dr["Columnas"] + "`,";
+                        linea += commando + "\"@" + dr["Columnas"] + "\", " + dr["Columnas"] + colaComando + "\r\n";
+                        //para los select
+                        rec += "Filas[\"" + dr["Columnas"] + "\"];\n\r";
+                    }
+                    else
+                    {
+                    }
+                }
+                catch { }
+            }
+            valores = valores.Substring(0, valores.Length - 1);
+            parametros = parametros.Substring(0, parametros.Length - 1);
+            campos = campos.Substring(0, campos.Length - 1);
+            code.Text =
+            "public void Selecionar(" + parametros + ")\r\n{\r\n" + trys + "\r\n" +
+            " string query = \r\n\" insert into `" + lbltabla.Text +
+            "` (" + campos + ")\r\nvalues (" +
+            valores
+            + ");\";\r\n" + completemento + "\r\n" + linea + "\r\n" + ejecuta + "\r\n" + captura + "}";
+        }
+        internal void crearUpdate()
+        {
+            string parametros = "";
+            string campos = "";
+            string valores = "";
+
+            /**
+ * 
+ * crear ejecucion de codigo
+ * 
+ * */
+            string completemento = "AbrirConexion();\r\n" +
+                "Comando.CommandType = System.Data.CommandType.Text;\r\n" +
+                "Comando.Connection = CadenaConeccion;\r\n" +
+                "Comando.CommandText = query;\r\n";
+            string ejecuta = "Filas = Comando.ExecuteNonQuery();";
+            string rec = "";
+            string commando = "command.Parameters.AddWithValue(";
+            string colaComando = ");";
+            string trys = "try{";
+            string captura = "}catch(Exception ex){\r\nMessageBox.show(ex.message);\r\n}";
+            string linea = "";
+            DataTable datos = (DataTable)dgvcolumnas.DataSource;
+            foreach (DataRow dr in datos.Rows)
+            {
+                try
+                {
+                    if (Convert.ToBoolean(dr["Selecionar"].ToString()) != false)
+                    {
+                        campos += "`" + dr["Columnas"] + "`,";
+                        parametros += new DicDatos().tipoData(dr["Tipo"].ToString()) + " " + dr["Columnas"] + ",";
+                        valores += "`@" + dr["Columnas"] + "`,";
+                        linea += commando + "\"@" + dr["Columnas"] + "\", " + dr["Columnas"] + colaComando + "\r\n";
+                        //para los select
+                        rec += "Filas[\"" + dr["Columnas"] + "\"];\n\r";
+                    }
+                    else
+                    {
+                    }
+                }
+                catch { }
+            }
+            valores = valores.Substring(0, valores.Length - 1);
+            parametros = parametros.Substring(0, parametros.Length - 1);
+            campos = campos.Substring(0, campos.Length - 1);
+            code.Text =
+            "public void Actualizar(" + parametros + ")\r\n{\r\n" + trys + "\r\n" +
+            " string query = \r\n\" insert into `" + lbltabla.Text +
+            "` (" + campos + ")\r\nvalues (" +
+            valores
+            + ");\";\r\n" + completemento + "\r\n" + linea + "\r\n" + ejecuta + "\r\n" + captura + "}";
+        }
+        internal void crearDelete()
+        {
+            string parametros = "";
+            string campos = "";
+            string valores = "";
+            /**
+             * 
+             * crear ejecucion de codigo
+             * 
+             * */
+
+            string completemento = "AbrirConexion();\r\n" +
+                "Comando.CommandType = System.Data.CommandType.Text;\r\n" +
+                "Comando.Connection = CadenaConeccion;\r\n" +
+                "Comando.CommandText = query;\r\n";
+            string ejecuta = "Filas = Comando.ExecuteNonQuery();";
+            string rec = "";
+            string commando = "command.Parameters.AddWithValue(";
+            string colaComando = ");";
+            string trys = "try{";
+            string captura = "}catch(Exception ex){\r\nMessageBox.show(ex.message);\r\n}";
+            string linea = "";
+            DataTable datos = (DataTable)dgvcolumnas.DataSource;
+            foreach (DataRow dr in datos.Rows)
+            {
+                try
+                {
+                    if (Convert.ToBoolean(dr["Selecionar"].ToString()) != false)
+                    {
+                        campos += "`" + dr["Columnas"] + "`,";
+                        parametros += new DicDatos().tipoData(dr["Tipo"].ToString()) + " " + dr["Columnas"] + ",";
+                        valores += "`@" + dr["Columnas"] + "`,";
+                        linea += commando + "\"@" + dr["Columnas"] + "\", " + dr["Columnas"] + colaComando + "\r\n";
+                        //para los select
+                        rec += "Filas[\"" + dr["Columnas"] + "\"];\n\r";
+                    }
+                    else
+                    {
+                    }
+                }
+                catch { }
+            }
+            valores = valores.Substring(0, valores.Length - 1);
+            parametros = parametros.Substring(0, parametros.Length - 1);
+            campos = campos.Substring(0, campos.Length - 1);
+            code.Text =
+            "public void Eliminar(" + parametros + ")\r\n{\r\n" + trys + "\r\n" +
+            " string query = \r\n\" insert into `" + lbltabla.Text +
+            "` (" + campos + ")\r\nvalues (" +
+            valores
+            + ");\";\r\n" + completemento + "\r\n" + linea + "\r\n" + ejecuta + "\r\n" + captura + "}";
+        }
+        #endregion
         private void dgvcolumnas_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
@@ -275,6 +497,33 @@ namespace Codebot
         {
             string texto2 = new StreamReader("TextFile2.txt").ReadToEnd();
             fastColoredTextBox2.Text = texto2;
+        }
+
+        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                DataTable temp = (DataTable)dgvcolumnas.DataSource;
+                if (checkBox5.Checked)
+                {
+                    DataTable outT = crearTablaColumnas();
+                    foreach (DataRow a in temp.Rows)
+                    {
+                        outT.Rows.Add(true, a[1], a[2]);
+                    }
+                    dgvcolumnas.DataSource = outT;
+                }
+                else
+                {
+                    DataTable outT = crearTablaColumnas();
+                    foreach (DataRow a in temp.Rows)
+                    {
+                        outT.Rows.Add(false, a[1], a[2]);
+                    }
+                    dgvcolumnas.DataSource = outT;
+                }
+            }
+            catch { }
         }
     }
 }

@@ -57,6 +57,7 @@
     </Reference>
     <Reference Include="MySql.Data">
       <HintPath>..\..\..\..\..\dualsoft\MySql.Data.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

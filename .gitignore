@@ -45,3 +45,6 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+*.exe
+obj/x86/debug/CodeBot.csproj.FileListAbsolute.txt
+*.exe

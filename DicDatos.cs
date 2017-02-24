@@ -55,6 +55,7 @@ namespace Codebot
                 case "bool": tipo = "bool"; break;
                 case "boolean": tipo = "Boolean"; break;
                 case "bit": tipo = "bool"; break;
+                case "decimal": tipo = "decimal"; break;
             }
             return tipo;
         }

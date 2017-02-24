@@ -30,17 +30,17 @@ namespace Codebot
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPrincipal));
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.chkSelect = new System.Windows.Forms.CheckBox();
+            this.chkdelete = new System.Windows.Forms.CheckBox();
+            this.chkupdate = new System.Windows.Forms.CheckBox();
             this.dgvcolumnas = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.lbltabla = new System.Windows.Forms.Label();
@@ -62,7 +62,7 @@ namespace Codebot
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.LoadDefaul = new System.Windows.Forms.CheckBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.chkinsert = new System.Windows.Forms.CheckBox();
             this.code = new FastColoredTextBoxNS.FastColoredTextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -72,6 +72,7 @@ namespace Codebot
             this.fastColoredTextBox2 = new FastColoredTextBoxNS.FastColoredTextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
+            this.checkBox5 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvcolumnas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvtablas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.code)).BeginInit();
@@ -88,35 +89,35 @@ namespace Codebot
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // checkBox1
+            // chkSelect
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(529, 77);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(56, 17);
-            this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "Select";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.chkSelect.AutoSize = true;
+            this.chkSelect.Location = new System.Drawing.Point(529, 77);
+            this.chkSelect.Name = "chkSelect";
+            this.chkSelect.Size = new System.Drawing.Size(56, 17);
+            this.chkSelect.TabIndex = 0;
+            this.chkSelect.Text = "Select";
+            this.chkSelect.UseVisualStyleBackColor = true;
             // 
-            // checkBox2
+            // chkdelete
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(529, 104);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(57, 17);
-            this.checkBox2.TabIndex = 1;
-            this.checkBox2.Text = "Delete";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.chkdelete.AutoSize = true;
+            this.chkdelete.Location = new System.Drawing.Point(529, 104);
+            this.chkdelete.Name = "chkdelete";
+            this.chkdelete.Size = new System.Drawing.Size(57, 17);
+            this.chkdelete.TabIndex = 1;
+            this.chkdelete.Text = "Delete";
+            this.chkdelete.UseVisualStyleBackColor = true;
             // 
-            // checkBox3
+            // chkupdate
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(607, 104);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(61, 17);
-            this.checkBox3.TabIndex = 2;
-            this.checkBox3.Text = "Update";
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.chkupdate.AutoSize = true;
+            this.chkupdate.Location = new System.Drawing.Point(607, 104);
+            this.chkupdate.Name = "chkupdate";
+            this.chkupdate.Size = new System.Drawing.Size(61, 17);
+            this.chkupdate.TabIndex = 2;
+            this.chkupdate.Text = "Update";
+            this.chkupdate.UseVisualStyleBackColor = true;
             // 
             // dgvcolumnas
             // 
@@ -125,35 +126,35 @@ namespace Codebot
             this.dgvcolumnas.AllowUserToResizeColumns = false;
             this.dgvcolumnas.AllowUserToResizeRows = false;
             this.dgvcolumnas.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvcolumnas.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvcolumnas.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvcolumnas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvcolumnas.DefaultCellStyle = dataGridViewCellStyle14;
-            this.dgvcolumnas.Location = new System.Drawing.Point(337, 226);
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvcolumnas.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvcolumnas.Location = new System.Drawing.Point(337, 271);
             this.dgvcolumnas.Name = "dgvcolumnas";
-            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle15.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvcolumnas.RowHeadersDefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvcolumnas.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvcolumnas.RowHeadersVisible = false;
-            this.dgvcolumnas.Size = new System.Drawing.Size(358, 367);
+            this.dgvcolumnas.Size = new System.Drawing.Size(358, 322);
             this.dgvcolumnas.TabIndex = 3;
             this.dgvcolumnas.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvcolumnas_CellContentClick);
             // 
@@ -191,36 +192,36 @@ namespace Codebot
             this.dgvtablas.AllowUserToResizeColumns = false;
             this.dgvtablas.AllowUserToResizeRows = false;
             this.dgvtablas.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvtablas.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvtablas.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvtablas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvtablas.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.TABLA});
-            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle17.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle17.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle17.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvtablas.DefaultCellStyle = dataGridViewCellStyle17;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvtablas.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgvtablas.Location = new System.Drawing.Point(12, 226);
             this.dgvtablas.Name = "dgvtablas";
             this.dgvtablas.ReadOnly = true;
-            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle18.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle18.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle18.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvtablas.RowHeadersDefaultCellStyle = dataGridViewCellStyle18;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvtablas.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.dgvtablas.RowHeadersVisible = false;
             this.dgvtablas.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dgvtablas.ShowCellErrors = false;
@@ -249,7 +250,7 @@ namespace Codebot
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(279, 599);
+            this.button1.Location = new System.Drawing.Point(262, 630);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(433, 23);
             this.button1.TabIndex = 10;
@@ -367,15 +368,15 @@ namespace Codebot
             this.LoadDefaul.UseVisualStyleBackColor = true;
             this.LoadDefaul.CheckedChanged += new System.EventHandler(this.LoadDefaul_CheckedChanged);
             // 
-            // checkBox4
+            // chkinsert
             // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(607, 80);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(52, 17);
-            this.checkBox4.TabIndex = 26;
-            this.checkBox4.Text = "Insert";
-            this.checkBox4.UseVisualStyleBackColor = true;
+            this.chkinsert.AutoSize = true;
+            this.chkinsert.Location = new System.Drawing.Point(607, 80);
+            this.chkinsert.Name = "chkinsert";
+            this.chkinsert.Size = new System.Drawing.Size(52, 17);
+            this.chkinsert.TabIndex = 26;
+            this.chkinsert.Text = "Insert";
+            this.chkinsert.UseVisualStyleBackColor = true;
             // 
             // code
             // 
@@ -403,6 +404,7 @@ namespace Codebot
             this.code.Cursor = System.Windows.Forms.Cursors.WaitCursor;
             this.code.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.code.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.code.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.code.IsReplaceMode = false;
             this.code.Language = FastColoredTextBoxNS.Language.CSharp;
             this.code.LeftBracket = '(';
@@ -453,7 +455,7 @@ namespace Codebot
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(734, 181);
+            this.tabPage2.Size = new System.Drawing.Size(548, 590);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Clase Sqlite";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -471,21 +473,29 @@ namespace Codebot
         '\"',
         '\'',
         '\''};
-            this.fastColoredTextBox1.AutoScrollMinSize = new System.Drawing.Size(131, 14);
+            this.fastColoredTextBox1.AutoIndentCharsPatterns = "\n^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;]+);\n^\\s*(case|default)\\s*[^:]*(" +
+    "?<range>:)\\s*(?<range>[^;]+);\n";
+            this.fastColoredTextBox1.AutoScrollMinSize = new System.Drawing.Size(106, 14);
             this.fastColoredTextBox1.BackBrush = null;
+            this.fastColoredTextBox1.BracketsHighlightStrategy = FastColoredTextBoxNS.BracketsHighlightStrategy.Strategy2;
             this.fastColoredTextBox1.CharHeight = 14;
             this.fastColoredTextBox1.CharWidth = 8;
             this.fastColoredTextBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.fastColoredTextBox1.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.fastColoredTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.fastColoredTextBox1.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.fastColoredTextBox1.IsReplaceMode = false;
             this.fastColoredTextBox1.Language = FastColoredTextBoxNS.Language.CSharp;
+            this.fastColoredTextBox1.LeftBracket = '(';
+            this.fastColoredTextBox1.LeftBracket2 = '{';
             this.fastColoredTextBox1.Location = new System.Drawing.Point(3, 3);
             this.fastColoredTextBox1.Name = "fastColoredTextBox1";
             this.fastColoredTextBox1.Paddings = new System.Windows.Forms.Padding(0);
+            this.fastColoredTextBox1.RightBracket = ')';
+            this.fastColoredTextBox1.RightBracket2 = '}';
             this.fastColoredTextBox1.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.fastColoredTextBox1.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("fastColoredTextBox1.ServiceColors")));
-            this.fastColoredTextBox1.Size = new System.Drawing.Size(728, 175);
+            this.fastColoredTextBox1.Size = new System.Drawing.Size(542, 584);
             this.fastColoredTextBox1.TabIndex = 0;
             this.fastColoredTextBox1.Text = "using System;";
             this.fastColoredTextBox1.Zoom = 100;
@@ -514,18 +524,26 @@ namespace Codebot
         '\"',
         '\'',
         '\''};
-            this.fastColoredTextBox2.AutoScrollMinSize = new System.Drawing.Size(179, 14);
+            this.fastColoredTextBox2.AutoIndentCharsPatterns = "\n^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;]+);\n^\\s*(case|default)\\s*[^:]*(" +
+    "?<range>:)\\s*(?<range>[^;]+);\n";
+            this.fastColoredTextBox2.AutoScrollMinSize = new System.Drawing.Size(154, 14);
             this.fastColoredTextBox2.BackBrush = null;
+            this.fastColoredTextBox2.BracketsHighlightStrategy = FastColoredTextBoxNS.BracketsHighlightStrategy.Strategy2;
             this.fastColoredTextBox2.CharHeight = 14;
             this.fastColoredTextBox2.CharWidth = 8;
             this.fastColoredTextBox2.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.fastColoredTextBox2.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.fastColoredTextBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.fastColoredTextBox2.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.fastColoredTextBox2.IsReplaceMode = false;
             this.fastColoredTextBox2.Language = FastColoredTextBoxNS.Language.CSharp;
+            this.fastColoredTextBox2.LeftBracket = '(';
+            this.fastColoredTextBox2.LeftBracket2 = '{';
             this.fastColoredTextBox2.Location = new System.Drawing.Point(0, 0);
             this.fastColoredTextBox2.Name = "fastColoredTextBox2";
             this.fastColoredTextBox2.Paddings = new System.Windows.Forms.Padding(0);
+            this.fastColoredTextBox2.RightBracket = ')';
+            this.fastColoredTextBox2.RightBracket2 = '}';
             this.fastColoredTextBox2.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.fastColoredTextBox2.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("fastColoredTextBox2.ServiceColors")));
             this.fastColoredTextBox2.Size = new System.Drawing.Size(548, 590);
@@ -563,16 +581,28 @@ namespace Codebot
             this.label5.TabIndex = 31;
             this.label5.Text = "Selecione Funcion";
             // 
+            // checkBox5
+            // 
+            this.checkBox5.AutoSize = true;
+            this.checkBox5.Location = new System.Drawing.Point(340, 237);
+            this.checkBox5.Name = "checkBox5";
+            this.checkBox5.Size = new System.Drawing.Size(175, 17);
+            this.checkBox5.TabIndex = 32;
+            this.checkBox5.Text = "Seleccionar Todos Los campos";
+            this.checkBox5.UseVisualStyleBackColor = true;
+            this.checkBox5.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
+            // 
             // frmPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightGray;
             this.ClientSize = new System.Drawing.Size(1324, 651);
+            this.Controls.Add(this.checkBox5);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.checkBox4);
+            this.Controls.Add(this.chkinsert);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.dgvtablas);
@@ -580,9 +610,9 @@ namespace Codebot
             this.Controls.Add(this.lbltabla);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dgvcolumnas);
-            this.Controls.Add(this.checkBox3);
-            this.Controls.Add(this.checkBox2);
-            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.chkupdate);
+            this.Controls.Add(this.chkdelete);
+            this.Controls.Add(this.chkSelect);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "frmPrincipal";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -607,9 +637,9 @@ namespace Codebot
         #endregion
 
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.CheckBox chkSelect;
+        private System.Windows.Forms.CheckBox chkdelete;
+        private System.Windows.Forms.CheckBox chkupdate;
         private System.Windows.Forms.DataGridView dgvcolumnas;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lbltabla;
@@ -631,7 +661,7 @@ namespace Codebot
         public System.Windows.Forms.TextBox txtuser;
         public System.Windows.Forms.TextBox txtpass;
         public System.Windows.Forms.TextBox txtport;
-        private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.CheckBox chkinsert;
         private FastColoredTextBox code;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
@@ -641,6 +671,7 @@ namespace Codebot
         private FastColoredTextBox fastColoredTextBox2;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.CheckBox checkBox5;
     }
 }
 
