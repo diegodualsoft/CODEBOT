@@ -63,11 +63,9 @@ namespace Codebot
             this.label10 = new System.Windows.Forms.Label();
             this.LoadDefaul = new System.Windows.Forms.CheckBox();
             this.chkinsert = new System.Windows.Forms.CheckBox();
-            this.code = new FastColoredTextBoxNS.FastColoredTextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.fastColoredTextBox1 = new FastColoredTextBoxNS.FastColoredTextBox();
+            this.code = new FastColoredTextBoxNS.FastColoredTextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.fastColoredTextBox2 = new FastColoredTextBoxNS.FastColoredTextBox();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -75,11 +73,9 @@ namespace Codebot
             this.checkBox5 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvcolumnas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvtablas)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.code)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.code)).BeginInit();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox2)).BeginInit();
             this.panel1.SuspendLayout();
@@ -250,7 +246,7 @@ namespace Codebot
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(262, 630);
+            this.button1.Location = new System.Drawing.Point(262, 603);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(433, 23);
             this.button1.TabIndex = 10;
@@ -378,10 +374,30 @@ namespace Codebot
             this.chkinsert.Text = "Insert";
             this.chkinsert.UseVisualStyleBackColor = true;
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Location = new System.Drawing.Point(756, 10);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(556, 616);
+            this.tabControl1.TabIndex = 29;
+            this.tabControl1.TabIndexChanged += new System.EventHandler(this.tabControl1_TabIndexChanged);
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.code);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(548, 590);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Metodo nuevo";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
             // code
             // 
-            this.code.AllowDrop = false;
-            this.code.AllowMacroRecording = false;
             this.code.AutoCompleteBrackets = true;
             this.code.AutoCompleteBracketsList = new char[] {
         '(',
@@ -404,6 +420,7 @@ namespace Codebot
             this.code.Cursor = System.Windows.Forms.Cursors.WaitCursor;
             this.code.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.code.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.code.FindEndOfFoldingBlockStrategy = FastColoredTextBoxNS.FindEndOfFoldingBlockStrategy.Strategy2;
             this.code.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.code.IsReplaceMode = false;
             this.code.Language = FastColoredTextBoxNS.Language.CSharp;
@@ -425,81 +442,6 @@ namespace Codebot
             this.code.WordWrap = true;
             this.code.Zoom = 100;
             this.code.Load += new System.EventHandler(this.code_Load);
-            // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Location = new System.Drawing.Point(756, 10);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(556, 616);
-            this.tabControl1.TabIndex = 29;
-            this.tabControl1.TabIndexChanged += new System.EventHandler(this.tabControl1_TabIndexChanged);
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.code);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(548, 590);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Metodo nuevo";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.fastColoredTextBox1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(548, 590);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Clase Sqlite";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // fastColoredTextBox1
-            // 
-            this.fastColoredTextBox1.AutoCompleteBracketsList = new char[] {
-        '(',
-        ')',
-        '{',
-        '}',
-        '[',
-        ']',
-        '\"',
-        '\"',
-        '\'',
-        '\''};
-            this.fastColoredTextBox1.AutoIndentCharsPatterns = "\n^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;]+);\n^\\s*(case|default)\\s*[^:]*(" +
-    "?<range>:)\\s*(?<range>[^;]+);\n";
-            this.fastColoredTextBox1.AutoScrollMinSize = new System.Drawing.Size(106, 14);
-            this.fastColoredTextBox1.BackBrush = null;
-            this.fastColoredTextBox1.BracketsHighlightStrategy = FastColoredTextBoxNS.BracketsHighlightStrategy.Strategy2;
-            this.fastColoredTextBox1.CharHeight = 14;
-            this.fastColoredTextBox1.CharWidth = 8;
-            this.fastColoredTextBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.fastColoredTextBox1.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.fastColoredTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.fastColoredTextBox1.Font = new System.Drawing.Font("Courier New", 9.75F);
-            this.fastColoredTextBox1.IsReplaceMode = false;
-            this.fastColoredTextBox1.Language = FastColoredTextBoxNS.Language.CSharp;
-            this.fastColoredTextBox1.LeftBracket = '(';
-            this.fastColoredTextBox1.LeftBracket2 = '{';
-            this.fastColoredTextBox1.Location = new System.Drawing.Point(3, 3);
-            this.fastColoredTextBox1.Name = "fastColoredTextBox1";
-            this.fastColoredTextBox1.Paddings = new System.Windows.Forms.Padding(0);
-            this.fastColoredTextBox1.RightBracket = ')';
-            this.fastColoredTextBox1.RightBracket2 = '}';
-            this.fastColoredTextBox1.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
-            this.fastColoredTextBox1.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("fastColoredTextBox1.ServiceColors")));
-            this.fastColoredTextBox1.Size = new System.Drawing.Size(542, 584);
-            this.fastColoredTextBox1.TabIndex = 0;
-            this.fastColoredTextBox1.Text = "using System;";
-            this.fastColoredTextBox1.Zoom = 100;
-            this.fastColoredTextBox1.Load += new System.EventHandler(this.fastColoredTextBox1_Load);
             // 
             // tabPage3
             // 
@@ -620,11 +562,9 @@ namespace Codebot
             this.Load += new System.EventHandler(this.frmPrincipal_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvcolumnas)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvtablas)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.code)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.code)).EndInit();
             this.tabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox2)).EndInit();
             this.panel1.ResumeLayout(false);
@@ -662,16 +602,14 @@ namespace Codebot
         public System.Windows.Forms.TextBox txtpass;
         public System.Windows.Forms.TextBox txtport;
         private System.Windows.Forms.CheckBox chkinsert;
-        private FastColoredTextBox code;
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private FastColoredTextBox fastColoredTextBox1;
         private System.Windows.Forms.TabPage tabPage3;
         private FastColoredTextBox fastColoredTextBox2;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox checkBox5;
+        private System.Windows.Forms.TabPage tabPage1;
+        private FastColoredTextBox code;
     }
 }
 

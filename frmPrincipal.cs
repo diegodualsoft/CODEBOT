@@ -66,6 +66,7 @@ namespace Codebot
             alfa.Columns.Add("Selecionar", typeof(bool)).ReadOnly = false;
             alfa.Columns.Add("Columnas", typeof(string)).ReadOnly = true;
             alfa.Columns.Add("Tipo", typeof(string)).ReadOnly = true;
+            alfa.Columns.Add("Unique", typeof(string)).ReadOnly = true;
             return alfa;
         }
         private void llenarDgvColumns()
@@ -79,11 +80,13 @@ namespace Codebot
                     alfa.Columns.Add("Selecionar", typeof(bool)).ReadOnly = false ;
                     alfa.Columns.Add("Columnas", typeof(string)).ReadOnly = true;
                     alfa.Columns.Add("Tipo", typeof(string)).ReadOnly = true;
+                    alfa.Columns.Add("Unique", typeof(string)).ReadOnly = true;
                     while (Rec.Read())
                     {
                         DataRow beta =  alfa.NewRow();
                         beta["Columnas"] = Rec["Field"].ToString();
                         beta["Tipo"] = Rec["Type"].ToString();
+                        beta["Unique"] = Rec["Key"].ToString();
                         alfa.Rows.Add(beta);
 
                     }
@@ -286,17 +289,17 @@ namespace Codebot
  * crear los reader correcto para la ejecucion de codigo
  * 
  * */
-            string completemento = "AbrirConexion();\r\n" +
-                "Comando.CommandType = System.Data.CommandType.Text;\r\n" +
-                "Comando.Connection = CadenaConeccion;\r\n" +
-                "Comando.CommandText = query;\r\n";
+            string completemento = " MySqlCommand command = new DBCLass(db, ip, usuario, txtpass.Text, txtport.Text).ConexionMySql.CreateCommand();";
             string ejecuta = "Filas = Comando.ExecuteNonQuery();";
-            string rec = "";
+            string rec = "while(Filas.read()){\r\n"; string endread = "}";
             string commando = "command.Parameters.AddWithValue(";
             string colaComando = ");";
             string trys = "try{";
             string captura = "}catch(Exception ex){\r\nMessageBox.show(ex.message);\r\n}";
             string linea = "";
+            string ClaseData = "public class "+lbltabla.Text+"{";
+            string dataTipe = "";
+            string instanciaClase = lbltabla.Text +" datos = new "+lbltabla.Text+"();";
             DataTable datos = (DataTable)dgvcolumnas.DataSource;
             foreach (DataRow dr in datos.Rows)
             {
@@ -306,10 +309,11 @@ namespace Codebot
                     {
                         campos += "`" + dr["Columnas"] + "`,";
                         parametros += new DicDatos().tipoData(dr["Tipo"].ToString()) + " " + dr["Columnas"] + ",";
+                        dataTipe += new DicDatos().tipoData(dr["Tipo"].ToString()) + " " + dr["Columnas"] + "{get; set;}\r\n";
                         valores += "`@" + dr["Columnas"] + "`,";
                         linea += commando + "\"@" + dr["Columnas"] + "\", " + dr["Columnas"] + colaComando + "\r\n";
                         //para los select
-                        rec += "Filas[\"" + dr["Columnas"] + "\"];\n\r";
+                        rec +=  "datos."+dr["Columnas"] +"= Filas[\"" + dr["Columnas"] + "\"];\n\r";
                     }
                     else
                     {
@@ -320,12 +324,14 @@ namespace Codebot
             valores = valores.Substring(0, valores.Length - 1);
             parametros = parametros.Substring(0, parametros.Length - 1);
             campos = campos.Substring(0, campos.Length - 1);
+            
             code.Text =
-            "public void Selecionar(" + parametros + ")\r\n{\r\n" + trys + "\r\n" +
-            " string query = \r\n\" insert into `" + lbltabla.Text +
+            "public class sql {\r\npublic "+lbltabla.Text+" Selecionar(" + parametros + ")\r\n{\r\n" + trys + "\r\n" +instanciaClase +
+            "\r\n string query = \r\n\" insert into `" + lbltabla.Text +
             "` (" + campos + ")\r\nvalues (" +
             valores
-            + ");\";\r\n" + completemento + "\r\n" + linea + "\r\n" + ejecuta + "\r\n" + captura + "}";
+            + ");\";\r\n" + completemento + "\r\n" + linea + "\r\n" +
+            ejecuta + rec + endread + "\r\n" + captura + "\r\n return datos;\r\n}\r\n}\r\n\r\n" + ClaseData + "\r\n" + dataTipe + endread;
         }
         internal void crearUpdate()
         {
@@ -481,14 +487,11 @@ namespace Codebot
 
         private void fastColoredTextBox1_Load(object sender, EventArgs e)
         {
-            string texto = new StreamReader("TextFile1.txt").ReadToEnd();
-            fastColoredTextBox1.Text = texto;
+           
         }
 
         private void tabControl1_TabIndexChanged(object sender, EventArgs e)
         {
-            string texto = new StreamReader("TextFile1.txt").ReadToEnd();
-            fastColoredTextBox1.Text = texto;
             string texto2 = new StreamReader("TextFile2.txt").ReadToEnd();
             fastColoredTextBox2.Text = texto2;
         }
@@ -509,7 +512,7 @@ namespace Codebot
                     DataTable outT = crearTablaColumnas();
                     foreach (DataRow a in temp.Rows)
                     {
-                        outT.Rows.Add(true, a[1], a[2]);
+                        outT.Rows.Add(true, a[1], a[2], a[3]);
                     }
                     dgvcolumnas.DataSource = outT;
                 }
@@ -518,7 +521,7 @@ namespace Codebot
                     DataTable outT = crearTablaColumnas();
                     foreach (DataRow a in temp.Rows)
                     {
-                        outT.Rows.Add(false, a[1], a[2]);
+                        outT.Rows.Add(false, a[1], a[2],a[3]);
                     }
                     dgvcolumnas.DataSource = outT;
                 }

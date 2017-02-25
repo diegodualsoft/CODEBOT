@@ -16,11 +16,23 @@ namespace Codebot
         public string password { get; set; }
         public string usuario { get; set; }
         public string puerto { get; set; }
-        public static MySqlConnection conex;// new MySqlConnection("Server=;Database=db_patagonia;Uid=root;Pwd=''");
+        public static MySqlConnection conex;
         public MySqlCommand Comando = new MySqlCommand();
         public MySqlDataReader Rec;
 
+        private MySqlConnection conexionMySql;
 
+        public MySqlConnection ConexionMySql
+        {
+            get
+            {
+                return this.conexionMySql;
+            }
+            set
+            {
+                this.conexionMySql = value;
+            }
+        }
         public DBCLass(string db, string ip, string usu, string pass, string port)
         {
             database = db;
@@ -38,6 +50,7 @@ namespace Codebot
             }
             string cadena_coneccion = "Data Source=" + servidor + ";Database=" + database + ";Uid=" + usuario + ";Pwd='" + password + "';port=" + puerto + ";";
             conex = new MySqlConnection(cadena_coneccion);
+            conexionMySql = conex;
         }
         public void cargarDatosConexionXML()
         {
