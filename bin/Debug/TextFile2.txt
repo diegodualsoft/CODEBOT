@@ -9,7 +9,19 @@
         public MySqlCommand Comando = new MySqlCommand();
         public MySqlDataReader Rec;
 
+		private MySqlConnection conexionMySql;
 
+        public MySqlConnection ConexionMySql
+        {
+            get
+            {
+                return this.conexionMySql;
+            }
+            set
+            {
+                this.conexionMySql = value;
+            }
+        }
         public DBCLass(string db, string ip, string usu, string pass, string port)
         {
             database = db;
