@@ -22,4 +22,3 @@ L:\codes\CODEBOT\bin\Debug\TextFile1.txt
 L:\codes\CODEBOT\bin\Debug\TextFile2.txt
 C:\Users\linker\Documents\GitHub\CODEBOT\bin\Debug\TextFile1.txt
 C:\Users\linker\Documents\GitHub\CODEBOT\bin\Debug\TextFile2.txt
-C:\Users\linker\Documents\GitHub\CODEBOT\bin\Debug\MySql.Data.dll

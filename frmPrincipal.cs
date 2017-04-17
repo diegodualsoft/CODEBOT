@@ -261,10 +261,10 @@ namespace Codebot
                 {
                     if (Convert.ToBoolean(dr["Selecionar"].ToString()) != false)
                     {
-                        campos += "`" + dr["Columnas"] + "`,";
+                        campos += "" + dr["Columnas"] + ",";
                         parametros += new DicDatos().tipoData(dr["Tipo"].ToString()) + " " + dr["Columnas"] + ",";
                         dataTipe += "public "+ new DicDatos().tipoData(dr["Tipo"].ToString()) + " " + dr["Columnas"] + "{get; set;}\r\n";
-                        valores += "`@" + dr["Columnas"] + "`,";
+                        valores += "@" + dr["Columnas"] + ",";
                         linea += commando + "\"@" + dr["Columnas"] + "\", " + dr["Columnas"] + colaComando + "\n\r";
                         //para los select
                         rec +=  "datos."+dr["Columnas"] +"= Filas[\"" + dr["Columnas"] + "\"];\n\r";
@@ -283,8 +283,8 @@ namespace Codebot
             code.Text =
             "public class sql {\r\npublic "+lbltabla.Text+" Selecionar(" + 
             parametros + ")\r\n{\r\n" + trys + "\r\n" +instanciaClase +
-            "\r\n string query = \r\n\" insert into `" + lbltabla.Text +
-            "` (" + campos + ")\r\nvalues (" +
+            "\r\n string query = \r\n\" insert into " + lbltabla.Text +
+            " (" + campos + ")\r\nvalues (" +
             valores
             + ");\";\r\n" + completemento + "\r\n" + linea + "\r\n" +
             ejecuta +"\r\n"+ rec +"\r\n"+ endread + "\r\n" + captura + "\r\n return datos;\r\n}\r\n}"; 
