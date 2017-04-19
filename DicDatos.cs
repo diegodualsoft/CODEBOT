@@ -60,29 +60,5 @@ namespace Codebot
             }
             return tipo;
         }
-        /*
-         * equivalecia de datos
-         * -------------------------------------
-         * string = logtext, text, tinytext, MediumText, blob ,Enum y set
-         * char = char
-         * --------------------
-         * numericos
-         * uint = TinyInt
-         * int = SmallInt, MediumInt, Integer, int. bigint
-         * double = double, xReal
-         * float = float
-         * decimal = decimal
-         * --------------------
-         * fechas
-         * datetime = date //yyyy-MM-dd
-         * datetime = datetime //yyyy-MM-dd hh:mm:ss
-         * datetime = timeStamp // yyyy-MM-dd hh:mm:ss
-         * datetime = time //hh:mm:ss
-         * datetime = year // yy or yyyy
-         * --------------------------
-         * datos booleano
-         * bool or boolean = bit
-         * 
-         * */
     }
 }
