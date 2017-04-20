@@ -231,6 +231,78 @@ namespace Codebot
         internal void crearInsert()
         {
             //crear metedo de insercion dinamica mediante la metologia de parametros 
+            string parametros = "";
+            string campos = "";
+            string valores = "";
+
+            /**
+ * 
+ * crear los reader correcto para la ejecucion de codigo
+ * 
+ * */
+            string completemento = " MySqlCommand command = new DBCLass(db, ip, usuario, txtpass.Text, txtport.Text).ConexionMySql.CreateCommand();\n\r            command.CommandText = query; \n\rcommand.CommandType = CommandType.Text; ";
+            string  ejecuta = "Filas = Comando.ExecuteNonQuery();";
+            string rec = "while(Filas.Read()){"; string endread = "}";
+            string commando = "command.Parameters.AddWithValue(";
+            string colaComando = ");";
+            string trys = "try{";
+            string captura = "}catch(Exception ex){MessageBox.show(ex.message);}";
+            string linea = "";
+            string ClaseData = "public class " + lbltabla.Text + "{//Clase Para Manipulacion de datos De forma Dinamica";
+            string dataTipe = "";
+            string instanciaClase = lbltabla.Text + " datos = new " + lbltabla.Text + "();";
+            DataTable datos = (DataTable)dgvcolumnas.DataSource;
+            int salto = 0;
+            foreach (DataRow dr in datos.Rows)
+            {
+                try
+                {
+                    if (Convert.ToBoolean(dr["Selecionar"].ToString()) != false)
+                    {
+                        campos += "" + dr["Columnas"] + ",";
+
+                        parametros += new DicDatos().tipoData(dr["Tipo"].ToString()) + " " + dr["Columnas"] + ",";
+
+                        dataTipe += "public " + new DicDatos().tipoData(dr["Tipo"].ToString()) + " " + dr["Columnas"] + "{get; set;}\r\n";
+
+                        valores += "@" + dr["Columnas"] + ",";
+
+                        linea += (salto < 1 ? "\r" : "") + commando + "\"@" + dr["Columnas"] + "\",datos." + dr["Columnas"] + colaComando + "\r";
+
+                        //convert automaticos
+
+                       // string convert = (new DicDatos().tipoData(dr["Tipo"].ToString()) == "int" ? "Convert.ToInt32(" : "");
+
+                        //para los select
+                        //rec += (salto < 1 ? "\r" : "") + "datos." + dr["Columnas"] + "= " +
+                        //    convert + " Filas[\"" + dr["Columnas"] + "\"].ToString()" +
+                        //    (convert.Length > 0 ? ")" : "") + ";\r";
+                        salto++;
+                    }
+                    else
+                    {
+                    }
+                }
+                catch { }
+            }
+            //se eliminan caracteres sobrantes
+            valores = valores.Substring(0, valores.Length - 1);
+            parametros = parametros.Substring(0, parametros.Length - 1);
+            campos = campos.Substring(0, campos.Length - 1);
+            //se arma el metodo a usar 
+            code.Text =
+            "\r\n\r\n\r\npublic " + lbltabla.Text + " Insertar( " + lbltabla.Text
+             + " datos )\r\n{\r\n" + trys + "\r\n" /*+ instanciaClase */+
+            ///tipo de query
+            "\r\n string query = \r\n\" insert into "
+            ///
+            + lbltabla.Text +
+            " (" + campos + ")\r\nvalues (" +
+            valores
+            + ");\";\r\n" + completemento + "\r\n" + linea + "\r\n" +
+            ejecuta + /*"\r\n" + rec + endread + captura + "\r\n return datos;*/"\r\n}";
+            //se genera la clase de dato a usarse en el objeto que se lleva de aqui
+            ClassDat.Text = ClaseData + "\r\n" + dataTipe + endread;
         }
         internal void crearSelect()
         {
@@ -243,9 +315,9 @@ namespace Codebot
  * crear los reader correcto para la ejecucion de codigo
  * 
  * */
-            string completemento = " MySqlCommand command = new DBCLass(db, ip, usuario, txtpass.Text, txtport.Text).ConexionMySql.CreateCommand();";
-            string ejecuta = "Filas = Comando.ExecuteNonQuery();";
-            string rec = "while(Filas.read()){"; string endread = "}";
+            string completemento = " MySqlCommand command = new DBCLass(db, ip, usuario, txtpass.Text, txtport.Text).ConexionMySql.CreateCommand();\n\r            command.CommandText = query; \n\rcommand.CommandType = CommandType.Text; ";
+            string ejecuta = "Filas = Comando.ExecuteReader();";
+            string rec = "while(Filas.Read()){"; string endread = "}";
             string commando = "command.Parameters.AddWithValue(";
             string colaComando = ");";
             string trys = "try{";
@@ -270,10 +342,16 @@ namespace Codebot
 
                         valores += "@" + dr["Columnas"] + ",";
 
-                        linea += (salto < 1 ? "\r" : "") +commando + "\"@" + dr["Columnas"] + "\", " + dr["Columnas"] + colaComando + "\r";
+                        linea += (salto < 1 ? "\r" : "") +commando + "\"@" + dr["Columnas"] + "\",datos." + dr["Columnas"] + colaComando + "\r";
+
+                        //convert automaticos
+
+                        string convert = (new DicDatos().tipoData(dr["Tipo"].ToString()) == "int"  ? "Convert.ToInt32(" : "");
 
                         //para los select
-                        rec += (salto <1 ? "\r":"")+ "datos."+dr["Columnas"] +"= Filas[\"" + dr["Columnas"] + "\"].ToString();\r";
+                        rec += (salto <1 ? "\r":"")+ "datos."+dr["Columnas"] +"= "+
+                            convert+" Filas[\"" + dr["Columnas"] + "\"].ToString()"+
+                            (convert.Length >0 ? ")":"")+";\r";
                         salto++;
                     }
                     else
@@ -288,16 +366,16 @@ namespace Codebot
             campos = campos.Substring(0, campos.Length - 1);
             //se arma el metodo a usar 
             code.Text =
-            "public class sql {\r\npublic "+lbltabla.Text+" Selecionar(" + 
-            parametros + ")\r\n{\r\n" + trys + "\r\n" +instanciaClase +
+            "\r\n\r\n\r\npublic " + lbltabla.Text+" Selecionar(" + /*
+            parametros + */")\r\n{\r\n" + trys + "\r\n" +instanciaClase +
             ///tipo de query
-            "\r\n string query = \r\n\" insert into " 
+            " string query = \" select * from " 
             ///
-            + lbltabla.Text +
+            + lbltabla.Text/* +
             " (" + campos + ")\r\nvalues (" +
-            valores
-            + ");\";\r\n" + completemento + "\r\n" + linea + "\r\n" +
-            ejecuta +"\r\n"+ rec + endread +  captura + "\r\n return datos;\r\n}\r\n}"; 
+            valores*/
+            + "\";\r\n" + completemento + "\r\n" +/* linea + "\r\n" +*/
+            ejecuta +"\r\n"+ rec + endread +  captura + "\r\n return datos;\r\n}"; 
             //se genera la clase de dato a usarse en el objeto que se lleva de aqui
             ClassDat.Text= ClaseData + "\r\n" + dataTipe + endread;
         }
@@ -307,7 +385,80 @@ namespace Codebot
         }
         internal void crearDelete()
         {
-         //Crear metodo de eliminacion mediante la  primary key
+            //Crear metodo de eliminacion mediante la  primary key
+            //crear metedo de insercion dinamica mediante la metologia de parametros 
+            string parametros = "";
+            string campos = "";
+            string valores = "";
+
+            /**
+ * 
+ * crear los reader correcto para la ejecucion de codigo
+ * 
+ * */
+            string completemento = " MySqlCommand command = new DBCLass(db, ip, usuario, txtpass.Text, txtport.Text).ConexionMySql.CreateCommand();\n\r            command.CommandText = query; \n\rcommand.CommandType = CommandType.Text; ";
+            string ejecuta = "Filas = Comando.ExecuteNonQuery();";
+            string rec = "while(Filas.Read()){"; string endread = "}";
+            string commando = "command.Parameters.AddWithValue(";
+            string colaComando = ");";
+            string trys = "try{";
+            string captura = "}catch(Exception ex){MessageBox.show(ex.message);}";
+            string linea = "";
+            string ClaseData = "public class " + lbltabla.Text + "{//Clase Para Manipulacion de datos De forma Dinamica";
+            string dataTipe = "";
+            string instanciaClase = lbltabla.Text + " datos = new " + lbltabla.Text + "();";
+            DataTable datos = (DataTable)dgvcolumnas.DataSource;
+            int salto = 0;
+            foreach (DataRow dr in datos.Rows)
+            {
+                try
+                {
+                    if (Convert.ToBoolean(dr["Selecionar"].ToString()) != false && dr["Unique"].ToString() == "PRI")
+                    {
+                        campos += "" + dr["Columnas"] + ",";
+
+                        parametros += new DicDatos().tipoData(dr["Tipo"].ToString()) + " " + dr["Columnas"] + ",";
+
+                        dataTipe += "public " + new DicDatos().tipoData(dr["Tipo"].ToString()) + " " + dr["Columnas"] + "{get; set;}\r\n";
+
+                        valores += (dr["Unique"].ToString() == "PRI" ?   "@" + dr["Columnas"] : "") + ",";
+
+                        linea += (salto < 1 ? "\r" : "") + commando + "\"@" + dr["Columnas"] + "\",datos." + dr["Columnas"] + colaComando + "\r";
+
+                        //convert automaticos
+
+                        // string convert = (new DicDatos().tipoData(dr["Tipo"].ToString()) == "int" ? "Convert.ToInt32(" : "");
+
+                        //para los select
+                        //rec += (salto < 1 ? "\r" : "") + "datos." + dr["Columnas"] + "= " +
+                        //    convert + " Filas[\"" + dr["Columnas"] + "\"].ToString()" +
+                        //    (convert.Length > 0 ? ")" : "") + ";\r";
+                        salto++;
+                    }
+                    else
+                    {
+                    }
+                }
+                catch { }
+            }
+            //se eliminan caracteres sobrantes
+            valores = valores.Substring(0, valores.Length - 1);
+            parametros = parametros.Substring(0, parametros.Length - 1);
+            campos = campos.Substring(0, campos.Length - 1);
+            //se arma el metodo a usar 
+            code.Text =
+            "\r\n\r\n\r\npublic " + lbltabla.Text + " Eliminar(" +
+            parametros + ")\r\n{\r\n" + trys + "\r\n" + instanciaClase +
+            ///tipo de query
+            "\r\n string query = \" Delete from  "
+            ///
+            + lbltabla.Text +
+            " where " + campos + " = " +
+            valores
+            + ";\";\r\n" + completemento + "\r\n" + linea + "\r\n" +
+            ejecuta + /*"\r\n" + rec + endread + captura + "\r\n return datos;*/"\r\n}";
+            //se genera la clase de dato a usarse en el objeto que se lleva de aqui
+            ClassDat.Text = ClaseData + "\r\n" + dataTipe + endread;
         }
         #endregion
         private void dgvcolumnas_CellContentClick(object sender, DataGridViewCellEventArgs e)
