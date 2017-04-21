@@ -1,15 +1,24 @@
-﻿  public class DBCLass
-    {
-        public string database { get; set; }
-        public string servidor { get; set; }
-        public string password { get; set; }
-        public string usuario { get; set; }
-        public string puerto { get; set; }
-        public static MySqlConnection conex;
-        public MySqlCommand Comando = new MySqlCommand();
-        public MySqlDataReader Rec;
+﻿using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-		private MySqlConnection conexionMySql;
+namespace Codebot
+{
+    public class Conexion
+    {
+        private static Conexion conecta = (Conexion)null;
+        private MySqlConnection conexionMySql;
+        private string _server;
+        private string _user;
+        private string _pass;
+        private string _base;
+        private string _port;
+        private static string _empresa;
 
         public MySqlConnection ConexionMySql
         {
@@ -22,181 +31,143 @@
                 this.conexionMySql = value;
             }
         }
-        public DBCLass(string db, string ip, string usu, string pass, string port)
+
+        private Conexion()
         {
-            database = db;
-            servidor = ip;
-            password = pass;
-            usuario = usu;
-            puerto = port;
-            GestionConeccion();
+            this.cargarDatos();
+            this.conexionMySql = new MySqlConnection("Database=" + this._base + "; Data Source=" + this._server + "; User Id=" + this._user + "; Password=" + this._pass + "; port=" + this._port + ";");
+            ((DbConnection)this.conexionMySql).Open();
         }
-        internal void GestionConeccion()
+        //public conexion()
+        //{
+        //    this.cargarDatos();
+        //    this.conexionMySql = new MySqlConnection("Database=" + this._base + "; Data Source=" + this._server + "; User Id=" + this._user + "; Password=" + this._pass + "; port=" + this._port + ";");
+        //    ((DbConnection)this.conexionMySql).Open();
+        //}
+
+        private Conexion(string s, string b, string u, string p, string port)
         {
-            if (servidor == null || database == null || usuario == null || password == null || puerto == null)
-            {
-                cargarDatosConexionXML();
-            }
-            string cadena_coneccion = "Data Source=" + servidor + ";Database=" + database + ";Uid=" + usuario + ";Pwd='" + password + "';port=" + puerto + ";";
-            conex = new MySqlConnection(cadena_coneccion);
+            this.conexionMySql = new MySqlConnection("Database=" + b + "; Data Source=" + s + "; User Id=" + u + "; Password=" + p + "; port=" + port + ";");
+            ((DbConnection)this.conexionMySql).Open();
         }
 
-		/*
-		ejemplo de xml coneccion
-			<Conexion>
-  <Base>pata</Base>
-  <Server>localhost</Server>
-  <User>root</User>
-  <Pass>58521156</Pass>
-  <Port>3306</Port>
-</Conexion>
-		*/
-
-
-        public void cargarDatosConexionXML()
+        private bool cargarDatos()
         {
             try
             {
-                DataSet data = new DataSet();
-                data.ReadXml("c:\\pos\\conf.xml");
-                DataRow[] row = data.Tables["Conexion"].Select();
-                database = row[0]["Base"].ToString();
-                password = (row[0]["Pass"].ToString().Length > 0 ? row[0]["Pass"].ToString() : "");
-                puerto = row[0]["Port"].ToString();
-                servidor = row[0]["Server"].ToString();
-                usuario = row[0]["User"].ToString();
+                DataSet dataSet = new DataSet();
+                dataSet.ReadXml(@"C:\chufquen\xml\config.xml");
+                string filterExpression = "";
+                DataRow[] dataRowArray = dataSet.Tables["Conexion"].Select(filterExpression);
+                for (int index = 0; index < dataRowArray.Length; ++index)
+                {
+                    this._server = dataRowArray[index]["Server"].ToString();
+                    this._base = dataRowArray[index]["Base"].ToString();
+                    this._user = dataRowArray[index]["User"].ToString();
+                    this._pass = dataRowArray[index]["Pass"].ToString();
+                    this._port = (dataRowArray[index]["Port"].ToString().Length > 0 ? dataRowArray[index]["port"].ToString() : "3306");
+                    Conexion._empresa = dataRowArray[index]["Empresa"].ToString();
+                }
+                return true;
             }
-            catch { }
+            catch
+            {
+                this.creaXML();
+                return false;
+            }
         }
-        public DataTable Select_datatable(string sql)
+
+        private void creaXML()
         {
-            DataTable dataTable = new DataTable();
-            try
-            {
-                AbrirConexion();
-                MySqlCommand command = conex.CreateCommand();
-                ((DbCommand)command).CommandText = sql;
-                ((DbDataAdapter)new MySqlDataAdapter(command)).Fill(dataTable);
-                CerrarConexion();
-            }
-            catch (Exception ex)
-            {
-            }
-            return dataTable;
+            new datos().Serializar();
         }
-        public void AbrirConexion()
+
+        public static Conexion getConecta()
         {
-            //cargarDatosConexion();
-            if (conex.State == System.Data.ConnectionState.Closed)
-            {
-                conex.Open();
-                //MessageBox.Show("Conexión Establecida");
-            }
-            //else if (conex.State == ConnectionState.Open)
-            //{
-            //    conex.Close();
-            //   // conex.Open();
-            //}
+            if (Conexion.conecta == null)
+                Conexion.conecta = new Conexion();
+            if (((DbConnection)Conexion.conecta.conexionMySql).State != ConnectionState.Open)
+                Conexion.conecta = new Conexion();
+            return Conexion.conecta;
         }
-        public void CerrarConexion()
+
+        public static Conexion reconexion()
         {
-            if (conex.State == System.Data.ConnectionState.Open)
-            {
-                conex.Close();
-            }
+            Conexion.conecta.cerrarConexion();
+            Conexion.conecta = new Conexion();
+            return Conexion.conecta;
         }
 
-        public int EjecutarIUD(string CadSql)
+        public Conexion pruebaConexion()
         {
-            int Filas = 0;
-            try
-            {
-                AbrirConexion();
-                Comando.CommandType = System.Data.CommandType.Text;
-                Comando.Connection = conex;
-                Comando.CommandText = CadSql;
-                Filas = Comando.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                CerrarConexion();
-
-            }
-
-
-            return (Filas);
-
-
+            if (Conexion.conecta == null)
+                Conexion.conecta = new Conexion();
+            return Conexion.conecta;
         }
-
-        public int EjecutarIUD2(string CadSql)
+        //public static Conexion pruebaConexion(string s, string b, string u, string p, string port)
+        //{
+        //    if (Conexion.conecta == null)
+        //        Conexion.conecta = new Conexion(s, b, u, p, port);
+        //    return Conexion.conecta;
+        //}
+        public void cerrarConexion()
         {
-            int Filas = 0;
-            try
-            {
-                AbrirConexion();
-                Comando.CommandType = System.Data.CommandType.Text;
-                Comando.Connection = conex;
-                Comando.CommandText = CadSql;
-                Filas = Comando.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-
-            }
-            finally
-            {
-                CerrarConexion();
-
-            }
-
-
-            return (Filas);
-
-
+            ((DbConnection)this.conexionMySql).Close();
+            Conexion.conecta = (Conexion)null;
         }
-
-        public MySqlDataReader EjecutarConsulta(String CadSql)
-        {
-            try
-            {
-                AbrirConexion();
-                Comando.CommandType = System.Data.CommandType.Text;
-                Comando.Connection = conex;
-                Comando.CommandText = CadSql;
-                Rec = Comando.ExecuteReader();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                Rec = null;
-            }
-            return (Rec);
-
-        }
-        public MySqlDataReader EjecutarConsulta2(String CadSql)
-        {
-            try
-            {
-                AbrirConexion();
-                Comando.CommandType = System.Data.CommandType.Text;
-                Comando.Connection = conex;
-                Comando.CommandText = CadSql;
-                Rec = Comando.ExecuteReader();
-            }
-            catch (Exception ex)
-            {
-
-                Rec = null;
-                CerrarConexion();
-            }
-            return (Rec);
-
-        }
-
-
     }
+	    [XmlRoot(ElementName = "Conexion")]
+   public class Conexiondb
+    {
+        public string Empresa { get; set; }
+        public string Server { get; set; }
+        public string Base { get; set;}
+        public string User { get; set; }
+        public string Pass { get; set; }
+        public string Port { get; set; }
+        public Conexiondb()
+        {
+            this.Empresa = "";
+            this.Pass = "";
+            this.Port = "";
+            this.Server = "";
+            this.User = "";
+            this.Base = "";
+        }
+    }
+	   public class datos
+    {
+        private Conexiondb _conecciondb = new Conexiondb();
+
+        public Conexiondb Conexion
+        {
+            get { return this._conecciondb; }
+            set { this._conecciondb = value; }
+        }
+        public string Serializar()
+        {
+            XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+            namespaces.Add(string.Empty, string.Empty);
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Encoding = Encoding.GetEncoding("ISO-8859-1");
+            settings.Indent = true;
+            XmlSerializer xmlSerializer = new XmlSerializer(this.GetType());
+            string str = @"C:\chufquen\xml\";
+            XmlWriter xmlWriter = XmlWriter.Create(str + "config.XML", settings);
+            xmlSerializer.Serialize(xmlWriter, (object)this, namespaces);
+            xmlWriter.Close();
+            return (string)null;
+        }
+		public void guardar(){
+		                Conexiondb c = new Conexiondb();
+                c.Empresa = (txtempresa.Text.Length > 0 ? txtempresa.Text : "");
+                c.Base = (txtdb.Text.Length > 0 ? txtdb.Text : "");
+                c.Pass = (txtpass.Text.Length > 0 ? txtpass.Text : "");
+                c.Port = (txtport.Text.Length > 0 ? txtport.Text : "");
+                c.Server = (txtip.Text.Length > 0 ? txtip.Text : "");
+                c.User = (txtuser.Text.Length > 0 ? txtuser.Text : "");
+                new datos() { Conexion = c }.Serializar();	
+		}
+    }
+
+}
