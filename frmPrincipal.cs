@@ -208,8 +208,10 @@ namespace Codebot
                 codigo += code.Text + "\r\n";
                 code.Clear();
             }
-            code.Text = codigo;
+            
+            code.Text = ("public Data" + lbltabla.Text +"{\n\r" )+codigo+"\n\r}";
         }
+
         internal void setFuncion(string who) {
             switch (who)
             {
@@ -240,7 +242,7 @@ namespace Codebot
  * crear los reader correcto para la ejecucion de codigo
  * 
  * */
-            string completemento = " MySqlCommand comando = Conexion.getConecta().ConexionMySql.CreateCommand(); ";
+            string completemento = " MySqlCommand command = Conexion.getConecta().ConexionMySql.CreateCommand(); "+ "\n command.CommandText = query; \ncommand.CommandType = CommandType.Text; ";
             string  ejecuta = "command.ExecuteNonQuery();";
             string rec = "while(Filas.Read()){"; string endread = "}";
             string commando = "command.Parameters.AddWithValue(";
@@ -280,13 +282,13 @@ namespace Codebot
             campos = campos.Substring(0, campos.Length - 1);
             //se arma el metodo a usar 
             code.Text =
-            "\r\n\r\n\r\npublic "/* + lbltabla.Text */+ " Insertar" + lbltabla.Text + "( " + lbltabla.Text
+            "\n\rpublic "/* + lbltabla.Text */+ "void Insertar" + lbltabla.Text + "( " + lbltabla.Text
              + " datos )\r\n{\r\n" /*+ instanciaClase */+
             ///tipo de query
             " string query = \r\n\" insert into "
             ///
             + lbltabla.Text +
-            " (" + campos + ")\r\nvalues (" +
+            " (" + campos + ") values (" +
             valores
             + ");\";\r\n" + completemento + "\r\n" + linea + "\r\n" +
             ejecuta + /*"\r\n" + rec + endread + captura + "\r\n return datos;*/"\r\n}";
@@ -304,8 +306,8 @@ namespace Codebot
  * crear los reader correcto para la ejecucion de codigo
  * 
  * */
-            string completemento = " MySqlCommand comando = Conexion.getConecta().ConexionMySql.CreateCommand(); ";
-            string ejecuta = "Filas = Comando.ExecuteReader();";
+            string completemento = " MySqlCommand command = Conexion.getConecta().ConexionMySql.CreateCommand(); " + "\n command.CommandText = query; \ncommand.CommandType = CommandType.Text; ";
+            string ejecuta = "MySqlDataReader Filas = command.ExecuteReader();";
             string rec = "while(Filas.Read()){"; string endread = "}";
             string commando = "command.Parameters.AddWithValue(";
             string colaComando = ");";
@@ -355,8 +357,8 @@ namespace Codebot
             campos = campos.Substring(0, campos.Length - 1);
             //se arma el metodo a usar 
             code.Text =
-            "\r\n\r\n\r\npublic " + lbltabla.Text+ " Selecionar" + lbltabla.Text + "(" + /*
-            parametros + */")\r\n{\r\n" + trys + "\r\n" +instanciaClase +
+            "\n\rpublic " + lbltabla.Text+ " Selecionar" + lbltabla.Text + "(" + /*
+            parametros + */")\r\n{\r\n" +instanciaClase +
             ///tipo de query
             " string query = \" select * from " 
             ///
@@ -364,7 +366,7 @@ namespace Codebot
             " (" + campos + ")\r\nvalues (" +
             valores*/
             + "\";\r\n" + completemento + "\r\n" +/* linea + "\r\n" +*/
-            ejecuta +"\r\n"+ rec + endread +  captura + "\r\n return datos;\r\n}"; 
+            ejecuta +"\r\n"+ rec + endread + "\r\n return datos;\r\n}"; 
             //se genera la clase de dato a usarse en el objeto que se lleva de aqui
             ClassDat.Text= ClaseData + "\r\n" + dataTipe + endread;
         }
@@ -383,7 +385,7 @@ namespace Codebot
  * crear los reader correcto para la ejecucion de codigo
  * 
  * */
-            string completemento = " MySqlCommand comando = Conexion.getConecta().ConexionMySql.CreateCommand(); ";
+            string completemento = " MySqlCommand command = Conexion.getConecta().ConexionMySql.CreateCommand(); " + "\n command.CommandText = query; \ncommand.CommandType = CommandType.Text; ";
             string ejecuta = " command.ExecuteNonQuery();";
             string commando = "command.Parameters.AddWithValue(";
             string colaComando = ");";
@@ -434,8 +436,8 @@ namespace Codebot
             valoresWhere = valoresWhere.Substring(0, valoresWhere.Length - 1);
             //se arma el metodo a usar 
             code.Text =
-            "\r\n\r\n\r\npublic "/* + lbltabla.Text*/ + "void Update"+ lbltabla.Text+" (" +
-            lbltabla.Text + " Datos)\r\n{\r\n"  +
+            "\n\rpublic "/* + lbltabla.Text*/ + "void Update"+ lbltabla.Text+" (" +
+            lbltabla.Text + " datos)\r\n{\r\n"  +
             ///tipo de query
             " string query = \" update  "
             ///
@@ -459,7 +461,7 @@ namespace Codebot
  * crear los reader correcto para la ejecucion de codigo
  * 
  * */
-            string completemento = " MySqlCommand comando = Conexion.getConecta().ConexionMySql.CreateCommand(); ";
+            string completemento = " MySqlCommand command = Conexion.getConecta().ConexionMySql.CreateCommand(); " + "\n command.CommandText = query; \ncommand.CommandType = CommandType.Text; ";
             string ejecuta = "command.ExecuteNonQuery();";
             string rec = "while(Filas.Read()){"; string endread = "}";
             string commando = "command.Parameters.AddWithValue(";
@@ -510,8 +512,8 @@ namespace Codebot
             campos = campos.Substring(0, campos.Length - 1);
             //se arma el metodo a usar 
             code.Text =
-            "\r\n\r\n\r\npublic "/* + lbltabla.Text*/ + "void Eliminar(" +
-            parametros + ")\r\n{\r\n" + trys + "\r\n" + instanciaClase +
+            "\n\rpublic "/* + lbltabla.Text*/ + "void Eliminar(" +
+            parametros + ")\r\n{\r\n"+ instanciaClase +
             ///tipo de query
             "\r\n string query = \" Delete from  "
             ///
