@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using MySql.Data.MySqlClient;
+using MySql.Data;
 using FastColoredTextBoxNS;
 using System.Text.RegularExpressions;
 using System.Data;
@@ -42,7 +43,14 @@ namespace Codebot
         private void frmPrincipal_Load(object sender, EventArgs e)
         {
             //this.timer1.Start();
+            try
+            {
+                cargarDatosConexion();
+            }
+            catch
+            {
 
+            }
 
         }
         private void timer1_Tick(object sender, EventArgs e)
@@ -72,10 +80,14 @@ namespace Codebot
         private void llenarDgvColumns()
         {
             dgvcolumnas.DataSource = null;
-            MySqlDataReader Rec = null;
-            try
-            {
-                    Rec=   new DBCLass(txtDb.Text, txtIp.Text, txtuser.Text, txtpass.Text, txtport.Text).EjecutarConsulta("show fields from " + txtDb.Text + "." + dgvtablas.CurrentRow.Cells["TABLA"].Value.ToString() + " ");
+
+
+            string query = "show fields from " + txtDb.Text + "." + dgvtablas.CurrentRow.Cells[""].Value.ToString() + "; ";
+            MySqlCommand coma = Conexion.getConecta().ConexionMySql.CreateCommand();
+            coma.CommandText = query;
+            coma.CommandType = CommandType.Text;
+            MySqlDataReader Rec = coma.ExecuteReader();
+
                     DataTable alfa = new DataTable();
                     alfa.Columns.Add("Selecionar", typeof(bool)).ReadOnly = false ;
                     alfa.Columns.Add("Columnas", typeof(string)).ReadOnly = true;
@@ -90,20 +102,9 @@ namespace Codebot
                         alfa.Rows.Add(beta);
 
                     }
+            Rec.Close();
                     dgvcolumnas.DataSource = alfa;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                if (Rec != null)
-                {
-                    Rec.Close();
-                    Rec = null;
-                }
-            }
+
         }
         //claseBD cbd = new claseBD();
         //        string insertar = "insert into estadofact values ('" + mskRUT.Text + "','" + lblNumFact.Text + "','"+comboBox2.Text+"','$0','" + dateTimePicker1.Text+ "','" + txtVencimiento.Text + "')";
@@ -120,14 +121,13 @@ namespace Codebot
             //    _user = txtuser.Text
             //};
             int fila;
-            DBCLass db = new DBCLass(txtDb.Text, txtIp.Text, txtuser.Text, txtpass.Text, txtport.Text);
 
-            MySqlDataReader Rec = null;
-            try
-            {
-                Rec =  db.EjecutarConsulta("show tables from " + txtDb.Text + "");
+                 string query  =  "show tables from " + txtDb.Text + "";
+            MySqlCommand coma = Conexion.getConecta().ConexionMySql.CreateCommand();
+            coma.CommandText = query;
+            coma.CommandType = CommandType.Text;
 
-
+            MySqlDataReader Rec = coma.ExecuteReader();
                 dgvtablas.RowCount = 0;
                 while (Rec.Read())
                 {
@@ -137,30 +137,58 @@ namespace Codebot
 
 
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                if (Rec != null)
-                {
-                    Rec.Close();
-                    Rec = null;
-                }
-            }
+            Rec.Close();
+
         }
         public string cad_coneccion {get; set;}
+        internal bool valida()
+        {
+
+            bool _bas = (txtDb.Text.Length > 0 && txtDb.Text != "" && txtDb.Text != null ? true : false);
+            bool _ip = (txtIp.Text.Length > 0 && txtIp.Text != "" && txtIp.Text != null ? true : false);
+            bool _port = (txtport.Text.Length > 0 && txtport.Text != "" && txtport.Text != null ? true : false);
+            bool _pass = (txtpass.Text.Length > 0 && txtpass.Text != "" && txtpass.Text != null ? true : false);
+            bool _use = (txtuser.Text.Length > 0 && txtuser.Text != "" && txtuser.Text != null ? true : false);
+            bool salida = false;
+            if (_bas && _ip && _port && _pass && _use)
+            {
+                salida = true;
+            }
+            return salida;
+        }
         private void button2_Click(object sender, EventArgs e)
         {
-            llenarDgv();
+            if (valida())
+            {
+                datos dato = new datos();
+                dato.Conexion.Base = txtDb.Text;
+                dato.Conexion.Empresa = "";
+                dato.Conexion.Pass = txtpass.Text;
+                dato.Conexion.Port = txtport.Text;
+                dato.Conexion.Server = txtIp.Text;
+                dato.Conexion.User = txtuser.Text;
+                dato.Serializar();
+
+                if (Conexion.getConecta().pruebaConexion().ConexionMySql.State == ConnectionState.Open)
+                {
+                    MessageBox.Show("conectado");
+                    llenarDgv();
+                }
+                else
+                {
+                    MessageBox.Show("No conectado");
+                }
+            }
+            else
+            {
+                MessageBox.Show("hay Campos En Blanco");
+            }
         }
 
         private void dgvtablas_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             llenarDgvColumns();
-            lbltabla.Text = dgvtablas.CurrentRow.Cells["TABLA"].Value.ToString();
+            lbltabla.Text = dgvtablas.CurrentRow.Cells[""].Value.ToString();
             checkBox5.Checked = false;
         }
 
@@ -178,7 +206,7 @@ namespace Codebot
             }
             else
             {
-                MessageBox.Show("Debe Selecionar Funcion");
+                MessageBox.Show("Debe Selecionar Al Menos Una Funcion");
             }
         }
         internal void SelecionDeFunciones(bool insert, bool delete, bool select, bool update)
@@ -293,7 +321,7 @@ namespace Codebot
             + ");\";\r\n" + completemento + "\r\n" + linea + "\r\n" +
             ejecuta + /*"\r\n" + rec + endread + captura + "\r\n return datos;*/"\r\n}";
             //se genera la clase de dato a usarse en el objeto que se lleva de aqui
-            ClassDat.Text = ClaseData + "\r\n" + dataTipe + endread;
+            ClassDat.Text = ClaseData + "\r\n" + dataTipe +"\r\n"+ endread;
         }
         internal void crearSelect()
         {
@@ -368,7 +396,7 @@ namespace Codebot
             + "\";\r\n" + completemento + "\r\n" +/* linea + "\r\n" +*/
             ejecuta +"\r\n"+ rec + endread + "\r\n return datos;\r\n}"; 
             //se genera la clase de dato a usarse en el objeto que se lleva de aqui
-            ClassDat.Text= ClaseData + "\r\n" + dataTipe + endread;
+            ClassDat.Text= ClaseData + "\r\n" + dataTipe + "\r\n" + endread;
         }
         internal void crearUpdate()
         {
@@ -430,10 +458,12 @@ namespace Codebot
                 catch { }
             }
             //se eliminan caracteres sobrantes
-            valores = valores.Substring(0, valores.Length - 1);
-            parametros = parametros.Substring(0, parametros.Length - 1);
-            campos = campos.Substring(0, campos.Length - 1);
-            valoresWhere = valoresWhere.Substring(0, valoresWhere.Length - 1);
+            try {
+                valores = valores.Substring(0, valores.Length - 1);
+                parametros = parametros.Substring(0, parametros.Length - 1);
+                campos = campos.Substring(0, campos.Length - 1);
+                valoresWhere = valoresWhere.Substring(0, valoresWhere.Length - 1);
+            }catch { MessageBox.Show("Es Necesaria Una Primary key Para hacer La Funcion UPDATE"); code.Clear(); return; }
             //se arma el metodo a usar 
             code.Text =
             "\n\rpublic "/* + lbltabla.Text*/ + "void Update"+ lbltabla.Text+" (" +
@@ -446,7 +476,7 @@ namespace Codebot
             valoresWhere
             + ";\";\r\n" + completemento + "\r\n" + linea + "\r\n" +
             ejecuta +"\r\n}";
-            ClassDat.Text = ClaseData + "\r\n" + dataTipe ;
+            ClassDat.Text = ClaseData + "\r\n" + dataTipe + "\r\n}" ;
         }
         internal void crearDelete()
         {
@@ -486,7 +516,7 @@ namespace Codebot
 
                         dataTipe += "public " + new DicDatos().tipoData(dr["Tipo"].ToString()) + " " + dr["Columnas"] + "{get; set;}\r\n";
 
-                        valores += (dr["Unique"].ToString() == "PRI" ?   "@" + dr["Columnas"] : "") + ",";
+                        valores += (dr["Unique"].ToString() == "PRI" ? "@" + dr["Columnas"] : "") + ",";
 
                         linea += (salto < 1 ? "\r" : "") + commando + "\"@" + dr["Columnas"] + "\"," + dr["Columnas"] + colaComando + "\r";
 
@@ -506,11 +536,15 @@ namespace Codebot
                 }
                 catch { }
             }
-            //se eliminan caracteres sobrantes
-            valores = valores.Substring(0, valores.Length - 1);
+            try
+            {
+                //se eliminan caracteres sobrantes
+                valores = valores.Substring(0, valores.Length - 1);
+    
             parametros = parametros.Substring(0, parametros.Length - 1);
             campos = campos.Substring(0, campos.Length - 1);
-            //se arma el metodo a usar 
+            }catch { MessageBox.Show("Es Necesaria Una Primary key Para hacer La Funcion DELETE"); code.Clear();   return; }
+    //se arma el metodo a usar 
             code.Text =
             "\n\rpublic "/* + lbltabla.Text*/ + "void Eliminar(" +
             parametros + ")\r\n{\r\n"+ instanciaClase +
@@ -523,7 +557,7 @@ namespace Codebot
             + ";\";\r\n" + completemento + "\r\n" + linea + "\r\n" +
             ejecuta + /*"\r\n" + rec + endread + captura + "\r\n return datos;*/"\r\n}";
             //se genera la clase de dato a usarse en el objeto que se lleva de aqui
-            ClassDat.Text = ClaseData + "\r\n" + dataTipe;
+            ClassDat.Text = ClaseData + "\r\n" + dataTipe + "\r\n}";
         }
         #endregion
         private void dgvcolumnas_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -551,14 +585,17 @@ namespace Codebot
         {
             try
             {
-                DataSet data = new DataSet();
-                data.ReadXml("c:\\pos\\conf.xml");
-                DataRow[] row = data.Tables["Conexion"].Select();
+                DataSet dataSet = new DataSet();
+                dataSet.ReadXml(@"C:\CodeBot\xml\config.xml");
+                string filterExpression = "";
+                DataRow[] row = dataSet.Tables["Conexion"].Select(filterExpression);
                 txtDb.Text = row[0]["Base"].ToString();
                 txtpass.Text = (row[0]["Pass"].ToString().Length > 0 ? row[0]["Pass"].ToString() : "");
                 txtport.Text= row[0]["Port"].ToString();
                 txtIp.Text = row[0]["Server"].ToString();
                 txtuser.Text = row[0]["User"].ToString();
+
+
             }
             catch { }
         }
@@ -615,6 +652,11 @@ namespace Codebot
                 }
             }
             catch { }
+        }
+
+        private void panel3_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
