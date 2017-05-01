@@ -76,6 +76,8 @@ namespace Codebot
             this.panel4 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.Serializar = new FastColoredTextBoxNS.FastColoredTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvcolumnas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvtablas)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -90,6 +92,8 @@ namespace Codebot
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel5.SuspendLayout();
+            this.tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Serializar)).BeginInit();
             this.SuspendLayout();
             // 
             // timer1
@@ -377,6 +381,7 @@ namespace Codebot
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -421,7 +426,6 @@ namespace Codebot
             this.code.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.code.Dock = System.Windows.Forms.DockStyle.Fill;
             this.code.FindEndOfFoldingBlockStrategy = FastColoredTextBoxNS.FindEndOfFoldingBlockStrategy.Strategy2;
-            this.code.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.code.IsReplaceMode = false;
             this.code.Language = FastColoredTextBoxNS.Language.CSharp;
             this.code.LeftBracket = '(';
@@ -468,7 +472,7 @@ namespace Codebot
         '\''};
             this.fastColoredTextBox2.AutoIndentCharsPatterns = "\n^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;]+);\n^\\s*(case|default)\\s*[^:]*(" +
     "?<range>:)\\s*(?<range>[^;]+);\n";
-            this.fastColoredTextBox2.AutoScrollMinSize = new System.Drawing.Size(27, 14);
+            this.fastColoredTextBox2.AutoScrollMinSize = new System.Drawing.Size(2, 14);
             this.fastColoredTextBox2.BackBrush = null;
             this.fastColoredTextBox2.BracketsHighlightStrategy = FastColoredTextBoxNS.BracketsHighlightStrategy.Strategy2;
             this.fastColoredTextBox2.CharHeight = 14;
@@ -476,7 +480,6 @@ namespace Codebot
             this.fastColoredTextBox2.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.fastColoredTextBox2.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.fastColoredTextBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.fastColoredTextBox2.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.fastColoredTextBox2.IsReplaceMode = false;
             this.fastColoredTextBox2.Language = FastColoredTextBoxNS.Language.CSharp;
             this.fastColoredTextBox2.LeftBracket = '(';
@@ -529,7 +532,6 @@ namespace Codebot
             this.ClassDat.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.ClassDat.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ClassDat.FindEndOfFoldingBlockStrategy = FastColoredTextBoxNS.FindEndOfFoldingBlockStrategy.Strategy2;
-            this.ClassDat.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.ClassDat.IsReplaceMode = false;
             this.ClassDat.Language = FastColoredTextBoxNS.Language.CSharp;
             this.ClassDat.LeftBracket = '(';
@@ -642,6 +644,62 @@ namespace Codebot
             this.panel5.Size = new System.Drawing.Size(439, 178);
             this.panel5.TabIndex = 36;
             // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.Serializar);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(869, 245);
+            this.tabPage4.TabIndex = 4;
+            this.tabPage4.Text = "tabPage4";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // Serializar
+            // 
+            this.Serializar.AutoCompleteBrackets = true;
+            this.Serializar.AutoCompleteBracketsList = new char[] {
+        '(',
+        ')',
+        '{',
+        '}',
+        '[',
+        ']',
+        '\"',
+        '\"',
+        '\'',
+        '\''};
+            this.Serializar.AutoIndentCharsPatterns = "\n^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;]+);\n^\\s*(case|default)\\s*[^:]*(" +
+    "?<range>:)\\s*(?<range>[^;]+);\n";
+            this.Serializar.AutoScrollMinSize = new System.Drawing.Size(0, 14);
+            this.Serializar.BackBrush = null;
+            this.Serializar.BracketsHighlightStrategy = FastColoredTextBoxNS.BracketsHighlightStrategy.Strategy2;
+            this.Serializar.CharHeight = 14;
+            this.Serializar.CharWidth = 8;
+            this.Serializar.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+            this.Serializar.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.Serializar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Serializar.FindEndOfFoldingBlockStrategy = FastColoredTextBoxNS.FindEndOfFoldingBlockStrategy.Strategy2;
+            this.Serializar.IsReplaceMode = false;
+            this.Serializar.Language = FastColoredTextBoxNS.Language.CSharp;
+            this.Serializar.LeftBracket = '(';
+            this.Serializar.LeftBracket2 = '{';
+            this.Serializar.Location = new System.Drawing.Point(3, 3);
+            this.Serializar.Name = "Serializar";
+            this.Serializar.Paddings = new System.Windows.Forms.Padding(0);
+            this.Serializar.ReadOnly = true;
+            this.Serializar.RightBracket = ')';
+            this.Serializar.RightBracket2 = '}';
+            this.Serializar.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+            this.Serializar.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("Serializar.ServiceColors")));
+            this.Serializar.ShowFoldingLines = true;
+            this.Serializar.Size = new System.Drawing.Size(863, 239);
+            this.Serializar.TabIndex = 30;
+            this.Serializar.UseWaitCursor = true;
+            this.Serializar.WideCaret = true;
+            this.Serializar.WordWrap = true;
+            this.Serializar.Zoom = 100;
+            // 
             // frmPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -676,6 +734,8 @@ namespace Codebot
             this.panel4.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
+            this.tabPage4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.Serializar)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -721,6 +781,8 @@ namespace Codebot
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.TabPage tabPage4;
+        private FastColoredTextBox Serializar;
     }
 }
 

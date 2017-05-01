@@ -60,5 +60,23 @@ namespace Codebot
             }
             return tipo;
         }
+        public object valorBase(string tipo)
+        {
+            object a = null;
+            switch (tipo)
+            {
+                case "string": a = "\"\""; break;
+                case "char": a = "\' \'"; break;
+                case "uint": a = "0"; break;
+                case "float": a = "0f"; break;
+                case "double": a = "0"; break;
+                case "int": a = "0"; break;
+                case "DateTime": a = "DateTime.Today"; break;
+                case "bool": a = "false"; break;
+                case "Boolean": a = "false"; break;
+                case "decimal": a = "decimal.Zero"; break;
+            }
+            return a;
+        }
     }
 }

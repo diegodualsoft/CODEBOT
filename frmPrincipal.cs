@@ -195,7 +195,11 @@ namespace Codebot
         private void dgvtablas_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             llenarDgvColumns();
-            lbltabla.Text = dgvtablas.CurrentRow.Cells["TABLA"].Value.ToString();
+            try
+            {
+                lbltabla.Text = dgvtablas.CurrentRow.Cells["TABLA"].Value.ToString();
+            }
+            catch { }
             checkBox5.Checked = false;
         }
         private void button1_Click(object sender, EventArgs e)
@@ -336,7 +340,7 @@ namespace Codebot
  * */
             string completemento = " MySqlCommand command = Conexion.getConecta().ConexionMySql.CreateCommand(); " + "\n command.CommandText = query; \ncommand.CommandType = CommandType.Text; ";
             string ejecuta = "MySqlDataReader Filas = command.ExecuteReader();";
-            string rec = "while(Filas.Read()){"; string endread = "}";
+            string rec = "while(Filas.Read()){"; string endread = " Filas.Close();}";
             string commando = "command.Parameters.AddWithValue(";
             string colaComando = ");";
             string trys = "try{";
@@ -421,6 +425,7 @@ namespace Codebot
             string ClaseData = "public class " + lbltabla.Text + "{//Clase Para Manipulacion de datos De forma Dinamica";
             string dataTipe = "";
             string instanciaClase = lbltabla.Text + " datos = new " + lbltabla.Text + "();";
+            string serializarXml = lbltabla.Text+ " a  = new "+lbltabla.Text+"();\n";
             DataTable datos = (DataTable)dgvcolumnas.DataSource;
             int salto = 0;
             foreach (DataRow dr in datos.Rows)
@@ -435,6 +440,8 @@ namespace Codebot
 
                         dataTipe += "public " + new DicDatos().tipoData(dr["Tipo"].ToString()) + " " + dr["Columnas"] + "{get; set;}\r\n";
 
+                        serializarXml += "a."+ dr["Columnas"] + "= " +  (new DicDatos().valorBase(new DicDatos().tipoData(dr["Tipo"].ToString()))).ToString()+";\n";
+
                         valoresWhere += (dr["Unique"].ToString() == "PRI" ? dr["Columnas"] + "= @" + dr["Columnas"] : "") + ",";
                         valores += dr["Columnas"] + "= @" + dr["Columnas"] + ",";
                         linea += (salto < 1 ? "\r" : "") + commando + "\"@" + dr["Columnas"] + "\",datos." + dr["Columnas"] + colaComando + "\r";
@@ -447,6 +454,8 @@ namespace Codebot
                         parametros += new DicDatos().tipoData(dr["Tipo"].ToString()) + " " + dr["Columnas"] + ",";
 
                         dataTipe += "public " + new DicDatos().tipoData(dr["Tipo"].ToString()) + " " + dr["Columnas"] + "{get; set;}\r\n";
+
+                        serializarXml += "a." + dr["Columnas"] + "= " + (new DicDatos().valorBase(new DicDatos().tipoData(dr["Tipo"].ToString()))).ToString() + ";\n";
 
                         valores += dr["Columnas"] + "= @" + dr["Columnas"] + ",";
 
@@ -477,6 +486,7 @@ namespace Codebot
             + ";\";\r\n" + completemento + "\r\n" + linea + "\r\n" +
             ejecuta +"\r\n}";
             ClassDat.Text = ClaseData + "\r\n" + dataTipe + "\r\n}" ;
+            Serializar.Text = serializarXml;
         }
         internal void crearDelete()
         {
