@@ -7,7 +7,7 @@ using System.Resources;
 // conjunto de atributos. Cambie estos atributos para modificar la información
 // asociada con un ensamblado.
 [assembly: AssemblyTitle("Codebot")]
-[assembly: AssemblyDescription("Herramienta Vieja")]
+[assembly: AssemblyDescription("Herramienta Operativa")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("DualSoft")]
 [assembly: AssemblyProduct("CodeBot")]
@@ -18,7 +18,7 @@ using System.Resources;
 // Si establece ComVisible como false, los tipos de este ensamblado no estarán visibles 
 // para los componentes COM. Si necesita obtener acceso a un tipo de este ensamblado desde 
 // COM, establezca el atributo ComVisible como true en este tipo.
-[assembly: ComVisible(true)]
+[assembly: ComVisible(false)]
 
 // El siguiente GUID sirve como identificador de typelib si este proyecto se expone a COM
 [assembly: Guid("1fd57269-0a55-4246-ab6b-ded44dd9e691")]

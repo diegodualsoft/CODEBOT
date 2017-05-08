@@ -78,5 +78,23 @@ namespace Codebot
             }
             return a;
         }
+        public object ConvercionBase(string tipo)
+        {
+            object a = null;
+            switch (tipo)
+            {
+                case "float": a = "("; break;
+                case "string": a = "Convert.ToString("; break;
+                case "char": a = "Convert.ToChar("; break;
+                case "uint": a = "Convert.ToUInt32("; break;
+                case "double": a = "Convert.ToDouble("; break;
+                case "int": a = "Convert.ToInt32("; break;
+                case "DateTime": a = "Convert.ToDateTime("; break;
+                case "bool": a = "Convert.ToBoolean("; break;
+                case "Boolean": a = "Convert.ToBoolean("; break;
+                case "decimal": a = "Convert.ToDecimal("; break;
+            }
+            return a;
+        }
     }
 }

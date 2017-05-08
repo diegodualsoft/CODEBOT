@@ -22,3 +22,9 @@ L:\codes\CODEBOT\bin\Debug\TextFile1.txt
 L:\codes\CODEBOT\bin\Debug\TextFile2.txt
 C:\Users\linker\Documents\GitHub\CODEBOT\bin\Debug\TextFile1.txt
 C:\Users\linker\Documents\GitHub\CODEBOT\bin\Debug\TextFile2.txt
+C:\CodeBot\CodeBot.exe.config
+C:\CodeBot\TextFile1.txt
+C:\CodeBot\TextFile2.txt
+C:\CodeBot\CodeBot.exe
+C:\CodeBot\CodeBot.pdb
+C:\Users\linker\Documents\GitHub\CODEBOT\obj\x86\Debug\Codebot.frmGestionReporte.resources

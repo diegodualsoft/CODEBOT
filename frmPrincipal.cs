@@ -215,33 +215,38 @@ namespace Codebot
         }
         internal void SelecionDeFunciones(bool insert, bool delete, bool select, bool update)
         {
-            string codigo = "";
-            if (insert)
+            try {
+                string codigo = "";
+                if (insert)
+                {
+                    setFuncion("insert");
+                    codigo += code.Text + "\r";
+                    code.Clear();
+                }
+                if (select)
+                {
+                    setFuncion("select");
+                    codigo += code.Text + "\r";
+                    code.Clear();
+                }
+                if (delete)
+                {
+                    setFuncion("delete");
+                    codigo += code.Text + "\r";
+                    code.Clear();
+                }
+                if (update)
+                {
+                    setFuncion("update");
+                    codigo += code.Text + "\r";
+                    code.Clear();
+                }
+
+                code.Text = ("public class Data" + lbltabla.Text + "{\r") + codigo + "\r}";
+            }catch (Exception ex)
             {
-                setFuncion("insert");
-                codigo += code.Text + "\r\n";
-                code.Clear();
+                Console.WriteLine(ex.Message);
             }
-            if (select)
-            {
-                setFuncion("select");
-                codigo += code.Text + "\r\n";
-                code.Clear();
-            }
-            if (delete)
-            {
-                setFuncion("delete");
-                codigo += code.Text + "\r\n";
-                code.Clear();
-            }
-            if (update)
-            {
-                setFuncion("update");
-                codigo += code.Text + "\r\n";
-                code.Clear();
-            }
-            
-            code.Text = ("public Data" + lbltabla.Text +"{\n\r" )+codigo+"\n\r}";
         }
 
         internal void setFuncion(string who) {
@@ -261,6 +266,20 @@ namespace Codebot
                     break;
             }
         }
+
+        string serializar = "public string Serializar(){\r string name = \"\";\r" +
+            "SaveFileDialog sf = new SaveFileDialog();\rsf.Filter = \"Archivo xml|*.xml\";"+
+            "\rsf.AddExtension = true;\rif(sf.ShowDialog() == DialogResult.OK)\r{\r name = sf.FileName;\r"+
+"XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();\r" +
+"namespaces.Add(string.Empty, string.Empty);\r" +
+"XmlWriterSettings settings = new XmlWriterSettings();\r" +
+"settings.Encoding = Encoding.GetEncoding(\"ISO-8859-1\");\r" +
+"settings.Indent = true;\r" +
+"XmlSerializer xmlSerializer = new XmlSerializer(this.GetType());\r" +
+"XmlWriter xmlWriter = XmlWriter.Create(name, settings);\r" +
+"xmlSerializer.Serialize(xmlWriter, (object)this, namespaces);\r" +
+"xmlWriter.Close();\r\r }" +
+"return (string)null;}\r";
         #region Funciones
         internal void crearInsert()
         {
@@ -279,6 +298,7 @@ namespace Codebot
             string rec = "while(Filas.Read()){"; string endread = "}";
             string commando = "command.Parameters.AddWithValue(";
             string colaComando = ");";
+            string serializarXml = lbltabla.Text + " a  = new " + lbltabla.Text + "();\n";
             string linea = "";
             string ClaseData = "public class " + lbltabla.Text + "{//Clase Para Manipulacion de datos De forma Dinamica";
             string dataTipe = "";
@@ -296,6 +316,9 @@ namespace Codebot
                         parametros += new DicDatos().tipoData(dr["Tipo"].ToString()) + " " + dr["Columnas"] + ",";
 
                         dataTipe += "public " + new DicDatos().tipoData(dr["Tipo"].ToString()) + " " + dr["Columnas"] + "{get; set;}\r\n";
+
+
+                        serializarXml += "a." + dr["Columnas"] + "= " + (new DicDatos().valorBase(new DicDatos().tipoData(dr["Tipo"].ToString()))).ToString() + ";\n";
 
                         valores += "@" + dr["Columnas"] + ",";
 
@@ -325,7 +348,8 @@ namespace Codebot
             + ");\";\r\n" + completemento + "\r\n" + linea + "\r\n" +
             ejecuta + /*"\r\n" + rec + endread + captura + "\r\n return datos;*/"\r\n}";
             //se genera la clase de dato a usarse en el objeto que se lleva de aqui
-            ClassDat.Text = ClaseData + "\r\n" + dataTipe +"\r\n"+ endread;
+            ClassDat.Text = ClaseData + "\r\n" + dataTipe + "\r\n"+serializar+"\r}";
+            Serializar.Text = serializarXml;
         }
         internal void crearSelect()
         {
@@ -344,6 +368,7 @@ namespace Codebot
             string commando = "command.Parameters.AddWithValue(";
             string colaComando = ");";
             string trys = "try{";
+            string serializarXml = lbltabla.Text + " a  = new " + lbltabla.Text + "();\n";
             string captura = "}catch(Exception ex){MessageBox.show(ex.message);}";
             string linea = "";
             string ClaseData = "public class "+lbltabla.Text+"{//Clase Para Manipulacion de datos De forma Dinamica";
@@ -367,9 +392,11 @@ namespace Codebot
 
                         linea += (salto < 1 ? "\r" : "") +commando + "\"@" + dr["Columnas"] + "\",datos." + dr["Columnas"] + colaComando + "\r";
 
+                        serializarXml += "a." + dr["Columnas"] + "= " + (new DicDatos().valorBase(new DicDatos().tipoData(dr["Tipo"].ToString()))).ToString() + ";\n";
+
                         //convert automaticos
 
-                        string convert = (new DicDatos().tipoData(dr["Tipo"].ToString()) == "int"  ? "Convert.ToInt32(" : "");
+                        string convert = new DicDatos().ConvercionBase( new DicDatos().tipoData( dr["Tipo"].ToString())).ToString() ;///  ? "Convert.ToInt32(" : "");
 
                         //para los select
                         rec += (salto <1 ? "\r":"")+ "datos."+dr["Columnas"] +"= "+
@@ -400,7 +427,8 @@ namespace Codebot
             + "\";\r\n" + completemento + "\r\n" +/* linea + "\r\n" +*/
             ejecuta +"\r\n"+ rec + endread + "\r\n return datos;\r\n}"; 
             //se genera la clase de dato a usarse en el objeto que se lleva de aqui
-            ClassDat.Text= ClaseData + "\r\n" + dataTipe + "\r\n" + endread;
+            ClassDat.Text= ClaseData + "\r\n" + dataTipe + "\r\n"+serializar+"\r}";
+            Serializar.Text = serializarXml;
         }
         internal void crearUpdate()
         {
@@ -485,7 +513,7 @@ namespace Codebot
             valoresWhere
             + ";\";\r\n" + completemento + "\r\n" + linea + "\r\n" +
             ejecuta +"\r\n}";
-            ClassDat.Text = ClaseData + "\r\n" + dataTipe + "\r\n}" ;
+            ClassDat.Text = ClaseData + "\r\n" + dataTipe  +"\r\n" + serializar + "\r}"; ;
             Serializar.Text = serializarXml;
         }
         internal void crearDelete()
@@ -507,6 +535,7 @@ namespace Codebot
             string commando = "command.Parameters.AddWithValue(";
             string colaComando = ");";
             string trys = "try{";
+            string serializarXml = lbltabla.Text + " a  = new " + lbltabla.Text + "();\n";
             string captura = "}catch(Exception ex){MessageBox.show(ex.message);}";
             string linea = "";
             string ClaseData = "public class " + lbltabla.Text + "{//Clase Para Manipulacion de datos De forma Dinamica";
@@ -525,6 +554,7 @@ namespace Codebot
                         parametros += new DicDatos().tipoData(dr["Tipo"].ToString()) + " " + dr["Columnas"] + ",";
 
                         dataTipe += "public " + new DicDatos().tipoData(dr["Tipo"].ToString()) + " " + dr["Columnas"] + "{get; set;}\r\n";
+                        serializarXml += "a." + dr["Columnas"] + "= " + (new DicDatos().valorBase(new DicDatos().tipoData(dr["Tipo"].ToString()))).ToString() + ";\n";
 
                         valores += (dr["Unique"].ToString() == "PRI" ? "@" + dr["Columnas"] : "") + ",";
 
@@ -567,7 +597,8 @@ namespace Codebot
             + ";\";\r\n" + completemento + "\r\n" + linea + "\r\n" +
             ejecuta + /*"\r\n" + rec + endread + captura + "\r\n return datos;*/"\r\n}";
             //se genera la clase de dato a usarse en el objeto que se lleva de aqui
-            ClassDat.Text = ClaseData + "\r\n" + dataTipe + "\r\n}";
+            ClassDat.Text = ClaseData + "\r\n" + dataTipe + "\r\n" + serializar + "\r}";
+            Serializar.Text = serializarXml;
         }
         #endregion
         private void dgvcolumnas_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -667,6 +698,11 @@ namespace Codebot
         private void panel3_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            new frmGestionReporte().ShowDialog();
         }
     }
 }
